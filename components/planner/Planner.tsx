@@ -17,6 +17,12 @@ import { DEFAULT_PLAN, estimate, loadPlan, placeLoc, placeName, r10, savePlan, s
 import { Preview, type PreviewHandle } from "./Preview";
 
 const LAST = STEPS.length - 1;
+/** Same breakpoint as the stacked (phone / short screen) layout in builder.css. */
+const STACKED = "(max-width: 900px), (max-height: 560px)";
+
+const EyeIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></svg>
+);
 
 function stepFromPath(pathname: string) {
   const seg = pathname.replace(/^\/builder\/?/, "").split("/")[0];
@@ -36,8 +42,9 @@ export function Planner() {
   const [loaded, setLoaded] = useState(false);
   const preview = useRef<PreviewHandle>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLElement>(null);
   const firstStep = useRef(true);
+  /** Phones and short screens: preview opens full screen on demand. */
+  const [fullPreview, setFullPreview] = useState(false);
 
   const setPlan = (patch: Partial<Plan>) => setPlanState((p) => ({ ...p, ...patch }));
   const est = useMemo(() => estimate(plan), [plan]);
@@ -58,8 +65,23 @@ export function Planner() {
     stepsRef.current?.scrollTo(0, 0);
     const h = stepsRef.current?.querySelector<HTMLElement>(`[data-step="${step}"] h1`);
     h?.focus({ preventScroll: true });
-    if (window.innerWidth <= 900) panelRef.current?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    if (window.matchMedia(STACKED).matches) window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   }, [step]);
+
+  // Full-screen preview: lock the page behind it, close with Escape
+  useEffect(() => {
+    if (!fullPreview) return;
+    document.documentElement.classList.add("bp-lock");
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setFullPreview(false);
+    const onResize = () => !window.matchMedia(STACKED).matches && setFullPreview(false);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.documentElement.classList.remove("bp-lock");
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [fullPreview]);
 
   const goTo = (i: number) => router.push(stepUrl(Math.max(0, Math.min(LAST, i))), { scroll: false });
 
@@ -106,11 +128,14 @@ export function Planner() {
           ))}
         </ol>
         <Link href="/" className="bp-back">← Back to site</Link>
+        <button type="button" className="bp-preview-btn" onClick={() => setFullPreview(true)}>
+          <EyeIcon /> Preview
+        </button>
       </header>
 
       <main className="bp-main">
         {/* ============ LEFT: CONTROLS ============ */}
-        <section className="bp-panel" aria-label="Plan your website" ref={panelRef}>
+        <section className="bp-panel" aria-label="Plan your website">
           <div className="bp-steps" ref={stepsRef}>
             <Step i={0} current={step} title="Tell us about your place" sub="Watch the live preview: it's your future website, building itself as you go.">
               <fieldset className="bp-field">
@@ -220,9 +245,14 @@ export function Planner() {
         </section>
 
         {/* ============ RIGHT: LIVE PREVIEW ============ */}
-        <section className="bp-stage" aria-label="Live preview of your website">
+        <section className={`bp-stage${fullPreview ? " is-open" : ""}`} aria-label="Live preview of your website"
+          role={fullPreview ? "dialog" : undefined} aria-modal={fullPreview || undefined}>
           <div className="bp-stage__bar">
+            <button type="button" className="bp-stage__close" onClick={() => setFullPreview(false)}>← Back to editing</button>
             <span className="bp-live"><i></i> Live preview</span>
+            <button type="button" className="bp-stage__expand" onClick={() => setFullPreview(true)} aria-label="Open the preview full screen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg> Full screen
+            </button>
             <div className="bp-device" role="radiogroup" aria-label="Preview device">
               {(["desktop", "phone"] as const).map((d) => (
                 <button key={d} type="button" className={plan.device === d ? "is-on" : undefined} role="radio" aria-checked={plan.device === d} onClick={() => setPlan({ device: d })}>

@@ -630,3 +630,13 @@ input:focus, textarea:focus { outline: none; border-color: var(--accent); box-sh
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ==========================================================
+   Notches and rounded screen corners (viewport-fit: cover)
+   ========================================================== */
+:root { --safe-x: max(env(safe-area-inset-left), env(safe-area-inset-right)); }
+.container { width: min(1180px, 100% - 48px - 2 * var(--safe-x)); }
+@media (max-width: 640px) { .container { width: calc(100% - 32px - 2 * var(--safe-x)); } }
+.nav { top: calc(14px + env(safe-area-inset-top)); }
+.nav__inner { width: min(1180px, 100% - 32px - 2 * var(--safe-x)); }
+.toast { bottom: calc(28px + env(safe-area-inset-bottom)); }

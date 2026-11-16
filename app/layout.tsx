@@ -23,7 +23,11 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-export const viewport: Viewport = { themeColor: "#f6f5f1" };
+export const viewport: Viewport = {
+  themeColor: "#f6f5f1",
+  // Use the whole screen on phones with notches / rounded corners; layouts pad with safe-area insets
+  viewportFit: "cover",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -351,20 +351,7 @@
   .stepper .lbl { display: none; }
   .stepper button { padding: 6px; }
 }
-@media (max-width: 900px) {
-  .bp { height: auto; overflow: visible; }
-  .bp-head { position: sticky; top: 0; z-index: 30; padding: 0 16px; }
-  .bp-back { display: none; }
-  .bp-main { display: flex; flex-direction: column; }
-  .bp-stage { order: -1; position: sticky; top: 64px; z-index: 10; height: 46vh; height: 46dvh; padding: 10px 16px 12px; background: var(--bg); border-bottom: 1px solid var(--border); }
-  .bp-stage__bar { display: none; }
-  .bp-frame[data-device] { max-width: none; border-radius: 12px; border: 0; }
-  .bp-frame .bp-frame__bar { display: flex; }
-  .bp-frame .bp-frame__notch { display: none !important; }
-  .bp-panel { border-right: 0; }
-  .bp-steps { overflow: visible; padding: 24px 16px 16px; }
-  .bp-foot { position: sticky; bottom: 0; z-index: 20; padding: 12px 16px; }
-}
+/* Phone / short-screen layout: see "Stacked layout" at the end of this file */
 @media (max-width: 480px) {
   .bp-head .logo span { display: none; }
   .bp-grid2 { grid-template-columns: 1fr; gap: 0; }
@@ -653,3 +640,113 @@
 .st2--premium .st2-ov { background: linear-gradient(180deg, rgba(10,11,15,.5), rgba(10,11,15,.75)); }
 /* Minimal-style split hero keeps the photo on the right */
 .pv[data-style="premium"] .pv-hero::after { background: rgba(0,0,0,.45); }
+
+
+/* ==========================================================
+   Stacked layout: phones, tablets in portrait, and short
+   screens (phones held sideways). Respects notches and
+   rounded corners through the safe-area insets.
+   ========================================================== */
+.bp-preview-btn, .bp-stage__close, .bp-stage__expand { display: none; }
+html.bp-lock, html.bp-lock body { overflow: hidden; }
+
+@media (max-width: 900px), (max-height: 560px) {
+  :root { --bp-head-h: calc(56px + env(safe-area-inset-top)); --bp-side: max(16px, env(safe-area-inset-left), env(safe-area-inset-right)); }
+  .bp { height: auto; overflow: visible; min-height: 100dvh; }
+
+  /* Header: compact, below the notch */
+  .bp-head {
+    position: sticky; top: 0; z-index: 30; gap: 10px;
+    height: var(--bp-head-h); padding: env(safe-area-inset-top) var(--bp-side) 0;
+  }
+  .bp-back { display: none; }
+  .stepper { gap: 4px; }
+  .stepper button { padding: 4px; }
+  .stepper .n { width: 26px; height: 26px; }
+
+  .bp-main { display: flex; flex-direction: column; }
+  .bp-panel { border-right: 0; }
+  .bp-steps { overflow: visible; padding: 20px var(--bp-side) 20px; }
+  .bp-step h1 { font-size: 1.5rem; }
+  .bp-sub { margin-bottom: 18px; }
+
+  /* Live preview: a small strip that stays in view while you edit */
+  .bp-stage {
+    order: -1; position: sticky; top: var(--bp-head-h); z-index: 10;
+    height: clamp(190px, 32dvh, 300px); padding: 8px var(--bp-side) 10px; gap: 6px;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+  }
+  .bp-stage__bar { display: flex; gap: 8px; min-height: 30px; }
+  .bp-stage__bar .bp-device { display: none; }
+  .bp-live { font-size: .78rem; }
+  .bp-stage__expand {
+    display: inline-flex; align-items: center; gap: 6px; margin-left: auto; padding: 5px 12px; border-radius: 999px;
+    border: 1px solid var(--border-strong); background: var(--surface); font-size: .78rem; font-weight: 600; color: var(--text);
+  }
+  .bp-stage__expand svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .bp-frame[data-device] { max-width: none; border-radius: 12px; border: 1px solid var(--border); }
+  .bp-frame .bp-frame__bar { display: none; }
+  .bp-frame .bp-frame__notch { display: none !important; }
+
+  /* Full-screen preview (opened from the strip or the header) */
+  .bp-stage.is-open {
+    position: fixed; inset: 0; z-index: 100; height: auto;
+    padding: calc(10px + env(safe-area-inset-top)) var(--bp-side) calc(10px + env(safe-area-inset-bottom));
+    border: 0; animation: fadeUp .3s var(--ease);
+  }
+  .bp-stage.is-open .bp-stage__close {
+    display: inline-flex; align-items: center; padding: 7px 14px; border-radius: 999px; border: 0;
+    background: var(--ink, #0f1123); color: #fff; font-size: .82rem; font-weight: 600;
+  }
+  .bp-stage.is-open .bp-stage__expand { display: none; }
+  .bp-stage.is-open .bp-live { margin-left: auto; }
+  .bp-stage.is-open .bp-frame__bar { display: flex; }
+
+  /* Bottom bar: price on the left, buttons on the right, above the home indicator */
+  .bp-foot {
+    position: sticky; bottom: 0; z-index: 20; gap: 10px;
+    padding: 10px var(--bp-side) max(10px, env(safe-area-inset-bottom));
+  }
+  .bp-total { flex: 1; min-width: 0; }
+  .bp-total b { font-size: 1.15rem; white-space: nowrap; }
+  .bp-total small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bp-nav { flex-shrink: 0; }
+  .bp-nav .btn { --pad: 10px 16px; }
+
+  .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+}
+
+/* Phones: tighter header and bottom bar */
+@media (max-width: 480px) {
+  .bp-head .logo span { display: none; }
+  .bp-total > span { display: none; }
+  .bp-total b { font-size: 1.05rem; }
+  .bp-total small { font-size: .72rem; }
+  .bp-nav .btn { --pad: 10px 14px; }
+}
+
+/* Short screens (phone held sideways): no room for the strip,
+   so the preview opens from the "Preview" button in the header */
+@media (max-height: 560px) {
+  .bp-stage:not(.is-open) { display: none; }
+  .bp-preview-btn {
+    display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--border-strong); background: var(--surface); font-size: .8rem; font-weight: 600; color: var(--text);
+  }
+  .bp-preview-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .bp-head .logo span { display: none; }
+  .bp-steps { padding-top: 14px; }
+  .bp-step h1 { font-size: 1.3rem; }
+}
+
+/* Smaller chat greeting inside narrow previews */
+@container (max-width: 640px) {
+  .pv-chat__bubble { max-width: 170px; font-size: .74rem; padding: 8px 11px; }
+}
+
+/* Medium previews (tablets, square screens): compact menu so nothing wraps */
+@container (max-width: 820px) {
+  .pv-links a { display: none; }
+  .pv-links { gap: 8px; }
+  .pv-nav .pv-btn { white-space: nowrap; }
+}
