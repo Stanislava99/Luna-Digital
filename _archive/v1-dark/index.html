@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luna Digital — Websites & Software, Crafted After Dark</title>
+  <meta name="description" content="Luna Digital builds booking websites for holiday rentals, guesthouses and small businesses: online booking, calendars synced with Airbnb and Booking.com, clear prices from €200." />
+  <meta name="theme-color" content="#070914" />
+  <link rel="canonical" href="https://lunadigital.pro/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lunadigital.pro/" />
+  <meta property="og:site_name" content="Luna Digital" />
+  <meta property="og:title" content="Luna Digital — Websites & Software, Crafted After Dark" />
+  <meta property="og:description" content="Fast, beautiful websites, web apps and custom software for ambitious businesses." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M20 4a12 12 0 1 0 8 20A10 10 0 0 1 20 4z' fill='%23c9d4ff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#top" class="logo" aria-label="Luna Digital home">
+        <svg viewBox="0 0 32 32" class="logo__mark" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8edff"/><stop offset="1" stop-color="#8b9cff"/></linearGradient></defs>
+          <path d="M20 3a13 13 0 1 0 9 22A11 11 0 0 1 20 3z" fill="url(#lg)"/>
+        </svg>
+        <span>Luna<b>Digital</b></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Main">
+        <a href="#work">Services &amp; prices</a>
+        <a href="#process">How it works</a>
+        <a href="#founding">Founding offer</a>
+        <a href="#faq">FAQ</a>
+        <a href="builder.html" class="btn btn--sm btn--primary nav__cta">Plan your website</a>
+      </nav>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <a class="moon-badge reveal" href="#founding">
+            <svg viewBox="0 0 40 40" class="moon-badge__icon" aria-hidden="true"><circle cx="20" cy="20" r="16" class="moon-dark"/><path id="badgePhase" class="moon-lit" d=""/></svg>
+            <span><b>Now open:</b> 5 founding client spots at 20% off <span aria-hidden="true">→</span></span>
+          </a>
+          <h1 class="hero__title reveal">
+            Websites that bring you <span class="shine">more bookings</span>.
+          </h1>
+          <p class="hero__lead reveal">
+            Beautiful websites for holiday rentals, guesthouses and small businesses: online booking,
+            calendars synced with Airbnb &amp; Booking.com, and clear prices from €200.
+          </p>
+          <div class="hero__ctas reveal">
+            <a href="builder.html" class="btn btn--primary">Plan your website <span aria-hidden="true">→</span></a>
+            <a href="#work" class="btn btn--ghost">See services &amp; prices</a>
+          </div>
+          <ul class="trust reveal">
+            <li><b>From €200</b><span>Clear, fixed prices</span></li>
+            <li><b>1–3 weeks</b><span>Typical website delivery</span></li>
+            <li><b>30 days</b><span>Free help after launch</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__visual" aria-hidden="true">
+          <div class="orbit orbit--1"><span class="planet"></span></div>
+          <div class="orbit orbit--2"><span class="planet planet--b"></span></div>
+          <svg class="moon" id="heroMoon" viewBox="0 0 400 400">
+            <defs>
+              <radialGradient id="moonSurface" cx="38%" cy="35%" r="70%">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset=".55" stop-color="#d8def5"/>
+                <stop offset="1" stop-color="#8e98c4"/>
+              </radialGradient>
+              <radialGradient id="crater" cx="40%" cy="40%" r="60%">
+                <stop offset="0" stop-color="#a9b2d8"/>
+                <stop offset="1" stop-color="#c7cee9"/>
+              </radialGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="18" />
+              </filter>
+            </defs>
+            <circle cx="200" cy="200" r="150" fill="#9fb0ff" opacity=".35" filter="url(#glow)"/>
+            <circle cx="200" cy="200" r="150" fill="url(#moonSurface)"/>
+            <g fill="url(#crater)" opacity=".85">
+              <circle cx="150" cy="140" r="26"/>
+              <circle cx="250" cy="120" r="14"/>
+              <circle cx="240" cy="230" r="34"/>
+              <circle cx="140" cy="250" r="18"/>
+              <circle cx="300" cy="190" r="10"/>
+              <circle cx="190" cy="310" r="12"/>
+              <circle cx="110" cy="190" r="8"/>
+            </g>
+          </svg>
+          <div class="float-card float-card--a">
+            <span class="dot dot--green"></span> New booking received
+          </div>
+          <div class="float-card float-card--b">
+            <span class="mini-score"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span> Looks great on phones
+          </div>
+        </div>
+      </div>
+
+      <div class="marquee" aria-label="Included in every project">
+        <div class="marquee__track">
+          <span>Fixed prices</span><span>Mobile-friendly</span><span>Google-ready</span><span>Secure https</span><span>You own everything</span><span>30 days free help</span><span>Fast loading</span><span>Plain-language updates</span>
+          <span aria-hidden="true">Fixed prices</span><span aria-hidden="true">Mobile-friendly</span><span aria-hidden="true">Google-ready</span><span aria-hidden="true">Secure https</span><span aria-hidden="true">You own everything</span><span aria-hidden="true">30 days free help</span><span aria-hidden="true">Fast loading</span><span aria-hidden="true">Plain-language updates</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WEBSITE PLANNER PROMO ============ -->
+    <section class="section" id="planner">
+      <div class="container promo">
+        <div class="promo__copy reveal">
+          <p class="eyebrow">Website planner</p>
+          <h2>Have a rental? Design your website in 2 minutes.</h2>
+          <p class="section__sub">Pick a style, switch on a gallery, calendar or online booking, and watch your future website build itself. You see the price instantly, with no sign-up.</p>
+          <ol class="promo__steps">
+            <li><b>1</b>Your place</li><li><b>2</b>Pick a look</li><li><b>3</b>Choose sections</li><li><b>4</b>Extras</li><li><b>5</b>Send your plan</li>
+          </ol>
+          <a href="builder.html" class="btn btn--primary">Start planning <span aria-hidden="true">→</span></a>
+        </div>
+        <a href="builder.html" class="promo__visual reveal" aria-label="Open the website planner">
+          <div class="pm">
+            <div class="pm__bar"><i></i><i></i><i></i><span>🔒 villaolive.com</span></div>
+            <div class="pm__hero">
+              <svg viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <defs><linearGradient id="pmsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd9a8"/><stop offset="1" stop-color="#f6b98a"/></linearGradient></defs>
+                <rect width="400" height="180" fill="url(#pmsky)"/><circle cx="300" cy="60" r="24" fill="#fff1d6"/>
+                <path d="M0 140 L80 60 L140 110 L200 40 L270 120 L330 70 L400 130 L400 180 L0 180Z" fill="#6b8f71"/>
+                <path d="M0 160 L70 120 L140 155 L220 110 L300 155 L400 120 L400 180 L0 180Z" fill="#40624a"/>
+              </svg>
+              <div class="pm__title"><b>Villa Olive</b><span>Your private villa, with room for everyone.</span></div>
+            </div>
+            <div class="pm__body">
+              <div class="pm__cal">
+                <span class="pm__label">Availability</span>
+                <div class="pm__grid"><i class=""></i><i class=""></i><i class="b"></i><i class="b"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="b"></i><i class="b"></i><i class=""></i><i class="s"></i><i class="s"></i><i class="s"></i><i class=""></i><i class="b"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+              </div>
+              <div class="pm__widget"><b>€80</b><small>/ night</small><span class="pm__btn">Pay €260 &amp; book</span></div>
+            </div>
+          </div>
+          <span class="pm-chip pm-chip--a">✓ Online booking</span>
+          <span class="pm-chip pm-chip--b">↻ Airbnb sync</span>
+          <span class="pm-chip pm-chip--c">€710–850 · 4 weeks</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ WORK / PRICES ============ -->
+    <section class="section section--alt" id="work">
+      <div class="container">
+        <header class="section__head section__head--row reveal">
+          <div>
+            <p class="eyebrow">Services &amp; prices</p>
+            <h2>What we can build for you.</h2>
+            <p class="section__sub">Click any example to try it, see the price and pick extras.</p>
+          </div>
+          <div class="filters" role="tablist" aria-label="Filter projects">
+            <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+            <button class="filter" data-filter="web" role="tab" aria-selected="false">Websites</button>
+            <button class="filter" data-filter="app" role="tab" aria-selected="false">Apps</button>
+            <button class="filter" data-filter="software" role="tab" aria-selected="false">Software</button>
+          </div>
+        </header>
+        <div class="work">
+          <article class="project reveal" data-cat="web" data-type="landing">
+            <div class="project__shot shot--d"><div class="mock"><i></i><i></i><i></i><div class="mock__hero"></div><div class="mock__row"><span></span></div></div></div>
+            <div class="project__meta"><h3>Landing page</h3><p>One page, one goal: sign-ups, bookings or calls</p><span class="pill pill--price">from €200</span></div>
+            <button type="button" class="project__open" aria-haspopup="dialog">Try it &amp; see price →</button>
+          </article>
+          <article class="project reveal" data-cat="web" data-type="website">
+            <div class="project__shot shot--b"><div class="mock"><i></i><i></i><i></i><div class="mock__hero"></div><div class="mock__row"><span></span><span></span><span></span></div></div></div>
+            <div class="project__meta"><h3>Business website</h3><p>Home, about, prices and contact pages for your business</p><span class="pill pill--price">from €400</span></div>
+            <button type="button" class="project__open" aria-haspopup="dialog">Try it &amp; see price →</button>
+          </article>
+          <article class="project reveal" data-cat="web" data-type="shop">
+            <div class="project__shot shot--a"><div class="mock"><i></i><i></i><i></i><div class="mock__grid"><span></span><span></span><span></span><span></span></div></div></div>
+            <div class="project__meta"><h3>Online store</h3><p>Sell products online with a cart and card payments</p><span class="pill pill--price">from €900</span></div>
+            <button type="button" class="project__open" aria-haspopup="dialog">Try it &amp; see price →</button>
+          </article>
+          <article class="project reveal" data-cat="app" data-type="webapp">
+            <div class="project__shot shot--e"><div class="mock mock--dash"><div class="mock__side"></div><div class="mock__main"><div class="mock__row"><span></span><span></span><span></span></div><div class="mock__chart mock__chart--bars"></div></div></div></div>
+            <div class="project__meta"><h3>Web app</h3><p>Dashboards, booking systems and client portals</p><span class="pill pill--price">from €600</span></div>
+            <button type="button" class="project__open" aria-haspopup="dialog">Try it &amp; see price →</button>
+          </article>
+          <article class="project reveal" data-cat="app" data-type="mobile">
+            <div class="project__shot shot--g"><div class="mock mock--phone"><div class="mock__bar"></div><div class="mock__card"></div><div class="mock__card"></div><div class="mock__card mock__card--sm"></div></div></div>
+            <div class="project__meta"><h3>Mobile app</h3><p>An app for iPhone and Android, on your customers' phones</p><span class="pill pill--price">from €2,500</span></div>
+            <button type="button" class="project__open" aria-haspopup="dialog">Try it &amp; see price →</button>
+          </article>
+          <article class="project reveal" data-cat="software" data-type="custom">
+            <div class="project__shot shot--c"><div class="mock mock--dash"><div class="mock__side"></div><div class="mock__main"><div class="mock__chart"></div><div class="mock__row"><span></span><span></span></div></div></div></div>
+            <div class="project__meta"><h3>Custom software</h3><p>Stock, orders and staff tools that replace spreadsheets</p><span class="pill pill--price">from €3,000</span></div>
+            <button type="button" class="project__open" aria-haspopup="dialog">Try it &amp; see price →</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXAMPLE + PRICE POPUP ============ -->
+    <dialog class="case" id="caseModal" aria-labelledby="previewTitle">
+      <div class="case__inner">
+        <button class="icon-btn case__close" type="button" id="caseClose" aria-label="Close">✕</button>
+        <div class="estimator">
+          <form class="estimator__form" id="estimator" onsubmit="return false">
+            <div hidden>
+              <label><input type="radio" name="type" value="landing" data-price="200" data-weeks="1" checked /><span>Landing page</span></label>
+              <label><input type="radio" name="type" value="website" data-price="400" data-weeks="2" /><span>Business website</span></label>
+              <label><input type="radio" name="type" value="shop" data-price="900" data-weeks="3" /><span>Online store</span></label>
+              <label><input type="radio" name="type" value="webapp" data-price="600" data-weeks="6" /><span>Web app</span></label>
+              <label><input type="radio" name="type" value="mobile" data-price="2500" data-weeks="8" /><span>Mobile app</span></label>
+              <label><input type="radio" name="type" value="custom" data-price="3000" data-weeks="8" /><span>Custom software</span></label>
+            </div>
+
+            <div class="case__head">
+              <p class="eyebrow" id="previewEyebrow">Example</p>
+              <h3 id="previewTitle">Landing page</h3>
+              <p id="previewDesc"></p>
+              <p class="preview__hint" id="previewHint"></p>
+            </div>
+            <div class="preview__stage" id="previewStage" aria-live="polite"></div>
+
+            <fieldset>
+              <legend>Add extras</legend>
+              <div class="choices choices--multi">
+                <label class="choice"><input type="checkbox" name="addon" value="Edit it yourself (CMS)" data-price="100" data-weeks="0" /><span>Edit it yourself<small>Change text &amp; photos without us · +€100</small></span></label>
+                <label class="choice"><input type="checkbox" name="addon" value="More languages" data-price="80" data-weeks="0" /><span>More languages<small>Your site in 2+ languages · +€80</small></span></label>
+                <label class="choice"><input type="checkbox" name="addon" value="Logo & brand" data-price="150" data-weeks="1" /><span>Logo &amp; brand<small>Logo, colours and fonts · +€150</small></span></label>
+                <label class="choice"><input type="checkbox" name="addon" value="Google-ready (SEO & visitor stats)" data-price="60" data-weeks="0" /><span>Google-ready<small>Show up in search + visitor stats · +€60</small></span></label>
+                <label class="choice"><input type="checkbox" name="addon" value="Connect your tools (payments, bookings, email)" data-price="150" data-weeks="1" /><span>Connect your tools<small>Payments, bookings, email lists · +€150</small></span></label>
+                <label class="choice"><input type="checkbox" name="addon" value="AI assistant" data-price="300" data-weeks="1" /><span>AI assistant<small>A chatbot that answers customers · +€300</small></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>When do you need it?</legend>
+              <div class="segmented" id="pace">
+                <label><input type="radio" name="pace" value="relaxed" data-mult="1" data-wmult="1.5" /><span>No rush</span></label>
+                <label><input type="radio" name="pace" value="standard" data-mult="1" data-wmult="1" checked /><span>Standard</span></label>
+                <label><input type="radio" name="pace" value="rush" data-mult="1.3" data-wmult="0.6" /><span>Rush +30%</span></label>
+              </div>
+            </fieldset>
+          </form>
+
+          <aside class="estimator__result" aria-live="polite">
+            <p class="result__label">Price</p>
+            <p class="result__price"><span id="estLow">€0</span> – <span id="estHigh">€0</span></p>
+            <div class="result__row">
+              <div><span>Timeline</span><b id="estWeeks">—</b></div>
+              <div class="result__gold"><span>Founding price (−20%)</span><b id="estFounding">—</b></div>
+            </div>
+            <div class="result__bar"><span id="estBar"></span></div>
+            <p class="result__note">Includes design, building, testing, launch and 30 days of free help. Final price agreed after a free call.</p>
+            <button class="btn btn--primary btn--block" id="sendEstimate" type="button">I want this →</button>
+          </aside>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="section" id="process">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">How we work</p>
+          <h2>Every project follows the moon.</h2>
+          <p class="section__sub">Four simple steps, a fixed price and no surprises along the way.</p>
+        </header>
+        <ol class="phases">
+          <li class="phase reveal" data-phase="0.03">
+            <svg viewBox="0 0 40 40" class="phase__moon" aria-hidden="true"><circle cx="20" cy="20" r="16" class="moon-dark"/><path class="moon-lit" d=""/></svg>
+            <span class="phase__num">01 · New moon</span>
+            <h3>Discover</h3>
+            <p>A free call about your business and goals. You get a clear plan, timeline and fixed price.</p>
+          </li>
+          <li class="phase reveal" data-phase="0.18">
+            <svg viewBox="0 0 40 40" class="phase__moon" aria-hidden="true"><circle cx="20" cy="20" r="16" class="moon-dark"/><path class="moon-lit" d=""/></svg>
+            <span class="phase__num">02 · Crescent</span>
+            <h3>Design</h3>
+            <p>We design how it will look. You see it and give feedback before anything is built.</p>
+          </li>
+          <li class="phase reveal" data-phase="0.32">
+            <svg viewBox="0 0 40 40" class="phase__moon" aria-hidden="true"><circle cx="20" cy="20" r="16" class="moon-dark"/><path class="moon-lit" d=""/></svg>
+            <span class="phase__num">03 · Gibbous</span>
+            <h3>Build</h3>
+            <p>We build it and share a private preview link, so you can watch it come together.</p>
+          </li>
+          <li class="phase reveal" data-phase="0.5">
+            <svg viewBox="0 0 40 40" class="phase__moon" aria-hidden="true"><circle cx="20" cy="20" r="16" class="moon-dark"/><path class="moon-lit" d=""/></svg>
+            <span class="phase__num">04 · Full moon</span>
+            <h3>Launch & grow</h3>
+            <p>Your site goes live. We help for 30 days, and we're here for updates after that.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ WHY ============ -->
+    <section class="section section--alt" id="why">
+      <div class="container why">
+        <div class="why__copy reveal">
+          <p class="eyebrow">Why Luna</p>
+          <h2>Simple, honest, built to work.</h2>
+          <p>No tech talk and no surprises. You tell us what you need, we explain it in plain words and build it properly.</p>
+          <ul class="checks">
+            <li>You talk directly to the person building your site</li>
+            <li>A fixed price agreed before we start, no hidden costs</li>
+            <li>The website is 100% yours when it's done</li>
+            <li>30 days of free help after launch</li>
+          </ul>
+        </div>
+        <div class="perks reveal">
+          <div class="perk"><span class="perk__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><b>Fast</b><p>Opens in a blink, even on a slow phone connection.</p></div>
+          <div class="perk"><span class="perk__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span><b>Works on every screen</b><p>Looks right on phones, tablets and computers.</p></div>
+          <div class="perk"><span class="perk__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><b>Easy to find on Google</b><p>Set up so people searching for you actually find you.</p></div>
+          <div class="perk"><span class="perk__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><b>Safe and secure</b><p>A secure connection (the padlock) and spam protection built in.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOUNDING CLIENTS ============ -->
+    <section class="section" id="founding">
+      <div class="container">
+        <div class="founding">
+          <div class="founding__copy reveal">
+            <p class="eyebrow">Founding clients</p>
+            <h2>Be one of our first five.</h2>
+            <p class="section__sub">Luna Digital is new, and we'd rather say so than pretend otherwise. We're taking on <b>five founding clients at 20% off</b> any project. In return we ask for one thing: an honest review when we're done.</p>
+            <ul class="checks">
+              <li>20% off the full project quote</li>
+              <li>A direct line to the people building it, no account managers</li>
+              <li>Priority scheduling and obsessive attention to detail</li>
+              <li>Your project featured in our portfolio (only with your OK)</li>
+            </ul>
+            <div class="hero__ctas">
+              <button class="btn btn--primary" id="claimFounding" type="button">Claim a founding spot <span aria-hidden="true">→</span></button>
+              <a href="#work" class="btn btn--ghost">See prices</a>
+            </div>
+          </div>
+          <aside class="founding__card reveal">
+            <p class="result__label">Founding spots</p>
+            <!-- To mark a spot as taken, change data-taken below (0–5). -->
+            <div class="spots" id="spots" data-total="5" data-taken="0"></div>
+            <p class="spots__text" id="spotsText">5 of 5 spots open</p>
+            <div class="founding__deal">
+              <div><span>You get</span><b>20% off</b></div>
+              <div><span>We ask for</span><b>An honest review</b></div>
+            </div>
+            <p class="result__note">Honest means honest: good or bad, in your own words. Your discount never depends on what you write.</p>
+          </aside>
+        </div>
+        <!-- REAL CLIENT REVIEWS: add Frosina's review here -->
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section section--alt" id="faq">
+      <div class="container faq">
+        <header class="section__head reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2>Good questions.</h2>
+          <p class="section__sub">Can't find your answer? <a href="#contact" class="link">Just ask us</a>.</p>
+        </header>
+        <div class="faq__list reveal">
+          <details>
+            <summary>What's the founding client offer?</summary>
+            <p>Our first five clients get 20% off their project. In exchange, we ask for an honest review after launch and, if you're happy to, permission to show the project in our portfolio. The discount applies whatever your review says.</p>
+          </details>
+          <details>
+            <summary>How long does a typical website take?</summary>
+            <p>Most landing pages are ready in about a week and business websites in 2–3 weeks. Apps and custom software usually take 6–10 weeks, and you see progress along the way.</p>
+          </details>
+          <details>
+            <summary>Do you work with clients abroad?</summary>
+            <p>Yes — we work remotely with clients across Europe and North America, with overlapping working hours and regular video check-ins.</p>
+          </details>
+          <details>
+            <summary>Who owns the code and design?</summary>
+            <p>You do. Once the project is paid, all code, designs and accounts are transferred to you. No lock-in.</p>
+          </details>
+          <details>
+            <summary>Can you take over an existing project?</summary>
+            <p>Absolutely. We start with a short technical audit, then propose a plan to stabilise, improve or rebuild — whatever makes the most sense for your budget.</p>
+          </details>
+          <details>
+            <summary>What happens after launch?</summary>
+            <p>Every project includes 30 days of free support. After that, optional care plans start at €20/month and cover updates, backups and small changes.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section" id="contact">
+      <div class="container contact">
+        <div class="contact__info reveal">
+          <p class="eyebrow">Contact</p>
+          <h2>Let's build something luminous.</h2>
+          <p>Tell us a little about your project. We reply within one business day with next steps and a time for a free 30-minute discovery call.</p>
+          <ul class="contact__list">
+            <li>
+              <span class="card__icon card__icon--sm"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+              <span><small>Email</small><a href="mailto:contact@lunadigital.pro">contact@lunadigital.pro</a></span>
+              <button class="copy" data-copy="contact@lunadigital.pro" aria-label="Copy email address">Copy</button>
+            </li>
+            <li>
+              <span class="card__icon card__icon--sm"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+              <span><small>Studio hours</small><span id="studioStatus">Mon–Fri, 9:00–18:00</span></span>
+            </li>
+          </ul>
+        </div>
+
+        <form class="contact__form reveal" id="contactForm" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="name">Your name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required placeholder="Jane Doe" />
+              <span class="field__error">Please tell us your name.</span>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="jane@company.com" />
+              <span class="field__error">Please enter a valid email.</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="company">Company <small>(optional)</small></label>
+            <input id="company" name="company" type="text" autocomplete="organization" placeholder="Company Inc." />
+          </div>
+          <fieldset class="field">
+            <legend>Budget</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="budget" value="Under €300" /><span>Under €300</span></label>
+              <label class="chip"><input type="radio" name="budget" value="€300–1,000" /><span>€300–1,000</span></label>
+              <label class="chip"><input type="radio" name="budget" value="€1,000–3,000" /><span>€1,000–3,000</span></label>
+              <label class="chip"><input type="radio" name="budget" value="€3,000+" /><span>€3,000+</span></label>
+            </div>
+          </fieldset>
+          <label class="check">
+            <input type="checkbox" name="founding" value="Yes" id="foundingCheck" />
+            <span>I'd like one of the 5 founding client spots (20% off, in exchange for an honest review)</span>
+          </label>
+          <div class="field">
+            <label for="message">Project details</label>
+            <textarea id="message" name="message" rows="5" required placeholder="What are you building, and what does success look like?"></textarea>
+            <span class="field__error">A few words about your project, please (min. 10 characters).</span>
+          </div>
+          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button class="btn btn--primary btn--block" type="submit" id="submitBtn">
+            <span class="btn__label">Send message</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+          <p class="form__note">By sending, you agree we may contact you about your enquiry. No spam, ever.</p>
+
+          <div class="form__success" id="formSuccess" role="status" hidden>
+            <div class="success__moon" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg></div>
+            <h3>Message received!</h3>
+            <p>Thanks, <span id="successName">friend</span>. We'll get back to you within one business day.</p>
+            <button class="btn btn--ghost" type="button" id="resetForm">Send another</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <a href="#top" class="logo">
+          <svg viewBox="0 0 32 32" class="logo__mark" aria-hidden="true"><path d="M20 3a13 13 0 1 0 9 22A11 11 0 0 1 20 3z" fill="url(#lg)"/></svg>
+          <span>Luna<b>Digital</b></span>
+        </a>
+        <p class="footer__tag">Websites & software, crafted after dark.</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="builder.html">Website planner</a>
+        <a href="#work">Services &amp; prices</a><a href="#process">How it works</a><a href="#founding">Founding offer</a><a href="#contact">Contact</a>
+      </nav>
+      <!-- Add social links here once the profiles exist -->
+    </div>
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Luna Digital. All rights reserved.</span>
+      <a href="#top" class="to-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
