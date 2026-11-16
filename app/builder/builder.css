@@ -7,7 +7,7 @@
 .bp-bulk span { margin-right: auto; font-family: var(--font-head); font-weight: 600; font-size: 1rem; }
 .bp-bulk__btn { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); font-size: .82rem; font-weight: 600; transition: background .2s, border-color .2s; }
 .bp-bulk__btn:hover { background: var(--surface-2); border-color: rgba(15,17,35,.3); }
-body.bp { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+.bp { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
 
 /* ---------- Header + stepper ---------- */
 .bp-head {
@@ -352,7 +352,7 @@ body.bp { height: 100vh; height: 100dvh; display: flex; flex-direction: column; 
   .stepper button { padding: 6px; }
 }
 @media (max-width: 900px) {
-  body.bp { height: auto; overflow: visible; }
+  .bp { height: auto; overflow: visible; }
   .bp-head { position: sticky; top: 0; z-index: 30; padding: 0 16px; }
   .bp-back { display: none; }
   .bp-main { display: flex; flex-direction: column; }

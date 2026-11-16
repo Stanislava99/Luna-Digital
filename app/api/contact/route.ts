@@ -1,48 +1,50 @@
 /**
- * Luna Digital — contact form handler (Vercel serverless function).
+ * Luna Digital: contact form handler (POST /api/contact).
  *
  * Sends form messages by email through Resend (https://resend.com, free tier).
  * To turn it on, add these Environment Variables in the Vercel project settings:
  *   RESEND_API_KEY   your Resend API key
- *   CONTACT_TO       where messages go, e.g. contact@lunadigital.pro (or your Gmail)
+ *   CONTACT_TO       where messages go, e.g. contact@lunadigital.pro
  *   CONTACT_FROM     optional, e.g. "Luna Digital <noreply@lunadigital.pro>"
  *                    (needs lunadigital.pro verified in Resend; defaults to Resend's test sender)
  *
- * Until RESEND_API_KEY is set, this returns ok:false and the website falls back
+ * Until RESEND_API_KEY is set this returns ok:false, and the website falls back
  * to opening the visitor's own email app, so no message is lost.
  */
+import { NextResponse } from "next/server";
+import { EMAIL_RE } from "@/lib/site";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const oneLine = (v, max) => String(v || "").replace(/[\r\n]+/g, " ").trim().slice(0, max);
+const oneLine = (v: unknown, max: number) => String(v ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, max);
 
-module.exports = async (req, res) => {
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
-  }
+async function readBody(req: Request): Promise<Record<string, unknown>> {
+  const type = req.headers.get("content-type") ?? "";
+  if (type.includes("application/json")) return (await req.json().catch(() => ({}))) as Record<string, unknown>;
+  const form = await req.formData().catch(() => null);
+  return form ? Object.fromEntries(form.entries()) : {};
+}
 
-  const body = req.body || {};
+export async function POST(req: Request) {
+  const body = await readBody(req);
 
   // Honeypot: bots fill hidden fields. Pretend success so they don't retry.
-  if (body._gotcha) return res.status(200).json({ ok: true });
+  if (body._gotcha) return NextResponse.json({ ok: true });
 
   const name = oneLine(body.name, 100);
   const email = oneLine(body.email, 150);
   const company = oneLine(body.company, 150);
   const budget = oneLine(body.budget, 50);
-  const founding = body.founding ? "Yes" : "";
-  const message = String(body.message || "").trim().slice(0, 5000);
+  const founding = Boolean(body.founding);
+  const message = String(body.message ?? "").trim().slice(0, 5000);
 
-  const errors = [];
-  if (name.length < 2) errors.push("name");
-  if (!EMAIL_RE.test(email)) errors.push("email");
-  if (message.length < 10) errors.push("message");
-  if (errors.length) return res.status(422).json({ ok: false, error: "Invalid fields", fields: errors });
+  const fields: string[] = [];
+  if (name.length < 2) fields.push("name");
+  if (!EMAIL_RE.test(email)) fields.push("email");
+  if (message.length < 10) fields.push("message");
+  if (fields.length) return NextResponse.json({ ok: false, error: "Invalid fields", fields }, { status: 422 });
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO;
-  if (!apiKey || !to) {
-    return res.status(503).json({ ok: false, error: "Email sending not configured" });
-  }
+  if (!apiKey || !to) return NextResponse.json({ ok: false, error: "Email sending not configured" }, { status: 503 });
 
   const text = [
     "New message from the Luna Digital website",
@@ -69,9 +71,13 @@ module.exports = async (req, res) => {
       }),
     });
     if (!r.ok) throw new Error(`Resend responded ${r.status}`);
-    return res.status(200).json({ ok: true });
+    return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Contact form email failed:", err);
-    return res.status(502).json({ ok: false, error: "Could not send email" });
+    return NextResponse.json({ ok: false, error: "Could not send email" }, { status: 502 });
   }
-};
+}
+
+export function GET() {
+  return NextResponse.json({ ok: false, error: "Method not allowed" }, { status: 405 });
+}
