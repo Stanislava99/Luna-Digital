@@ -644,76 +644,85 @@
 
 /* ==========================================================
    Stacked layout: phones, tablets in portrait, and short
-   screens (phones held sideways). Respects notches and
-   rounded corners through the safe-area insets.
+   screens (phones held sideways). The website preview fills
+   the screen; the choices sit in a bottom sheet on top of it.
+   "See result" slides the sheet down to a small bar, "Edit"
+   brings it back. Respects notches through the safe-area insets.
    ========================================================== */
-.bp-preview-btn, .bp-stage__close, .bp-stage__expand { display: none; }
-html.bp-lock, html.bp-lock body { overflow: hidden; }
+.bp-sheet-handle, .nav-sheet, .nav-peek { display: none; }
 
 @media (max-width: 900px), (max-height: 560px) {
-  :root { --bp-head-h: calc(56px + env(safe-area-inset-top)); --bp-side: max(16px, env(safe-area-inset-left), env(safe-area-inset-right)); }
-  .bp { height: auto; overflow: visible; min-height: 100dvh; }
+  :root {
+    --bp-head-h: calc(56px + env(safe-area-inset-top));
+    --bp-side: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+    /* height of the slid-down sheet: handle + bottom bar */
+    --bp-peek-h: calc(114px + env(safe-area-inset-bottom));
+  }
+  .bp { height: 100vh; height: 100dvh; overflow: hidden; }
 
   /* Header: compact, below the notch */
-  .bp-head {
-    position: sticky; top: 0; z-index: 30; gap: 10px;
-    height: var(--bp-head-h); padding: env(safe-area-inset-top) var(--bp-side) 0;
-  }
+  .bp-head { position: relative; z-index: 30; gap: 10px; height: var(--bp-head-h); padding: env(safe-area-inset-top) var(--bp-side) 0; }
   .bp-back { display: none; }
   .stepper { gap: 4px; }
   .stepper button { padding: 4px; }
   .stepper .n { width: 26px; height: 26px; }
 
-  .bp-main { display: flex; flex-direction: column; }
-  .bp-panel { border-right: 0; }
-  .bp-steps { overflow: visible; padding: 20px var(--bp-side) 20px; }
+  .bp-main { display: block; position: relative; }
+
+  /* The website, full screen behind the sheet */
+  .bp-stage { position: absolute; inset: 0 0 var(--bp-peek-h); padding: 0; gap: 0; background: #fff; }
+  .bp-stage__bar { display: none; }
+  .bp-frame[data-device] { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
+  .bp-frame .bp-frame__bar, .bp-frame .bp-frame__notch { display: none !important; }
+
+  /* The bottom sheet */
+  .bp-panel {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    width: 100%; max-width: 720px; margin: 0 auto;
+    height: calc(100dvh - var(--bp-head-h) - clamp(28px, 9dvh, 84px));
+    border: 1px solid var(--border); border-bottom: 0; border-radius: 22px 22px 0 0;
+    box-shadow: 0 -18px 50px -12px rgba(0,0,0,.35);
+    background: var(--surface, #fff); overflow: hidden; transition: height .4s var(--ease);
+    interpolate-size: allow-keywords;
+  }
+  .bp-panel.is-peek { height: var(--bp-peek-h); }
+  .bp-steps { flex: 1; min-height: 0; overflow-y: auto; padding: 4px var(--bp-side) 20px; outline: none; }
+  .bp-panel.is-peek .bp-steps { display: none; }
+  .bp-foot { margin-top: auto; }
   .bp-step h1 { font-size: 1.5rem; }
   .bp-sub { margin-bottom: 18px; }
 
-  /* Live preview: a small strip that stays in view while you edit */
-  .bp-stage {
-    order: -1; position: sticky; top: var(--bp-head-h); z-index: 10;
-    height: clamp(190px, 32dvh, 300px); padding: 8px var(--bp-side) 10px; gap: 6px;
-    background: var(--bg); border-bottom: 1px solid var(--border);
+  .bp-sheet-handle {
+    display: grid; justify-items: center; gap: 6px; flex-shrink: 0; width: 100%;
+    padding: 8px var(--bp-side) 6px; border: 0; background: none; color: var(--muted); font-size: .78rem; font-weight: 500;
   }
-  .bp-stage__bar { display: flex; gap: 8px; min-height: 30px; }
-  .bp-stage__bar .bp-device { display: none; }
-  .bp-live { font-size: .78rem; }
-  .bp-stage__expand {
-    display: inline-flex; align-items: center; gap: 6px; margin-left: auto; padding: 5px 12px; border-radius: 999px;
-    border: 1px solid var(--border-strong); background: var(--surface); font-size: .78rem; font-weight: 600; color: var(--text);
-  }
-  .bp-stage__expand svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-  .bp-frame[data-device] { max-width: none; border-radius: 12px; border: 1px solid var(--border); }
-  .bp-frame .bp-frame__bar { display: none; }
-  .bp-frame .bp-frame__notch { display: none !important; }
-
-  /* Full-screen preview (opened from the strip or the header) */
-  .bp-stage.is-open {
-    position: fixed; inset: 0; z-index: 100; height: auto;
-    padding: calc(10px + env(safe-area-inset-top)) var(--bp-side) calc(10px + env(safe-area-inset-bottom));
-    border: 0; animation: fadeUp .3s var(--ease);
-  }
-  .bp-stage.is-open .bp-stage__close {
-    display: inline-flex; align-items: center; padding: 7px 14px; border-radius: 999px; border: 0;
-    background: var(--ink, #0f1123); color: #fff; font-size: .82rem; font-weight: 600;
-  }
-  .bp-stage.is-open .bp-stage__expand { display: none; }
-  .bp-stage.is-open .bp-live { margin-left: auto; }
-  .bp-stage.is-open .bp-frame__bar { display: flex; }
+  .bp-sheet-handle i { width: 40px; height: 5px; border-radius: 99px; background: var(--border-strong); }
+  .bp-sheet-handle b { color: var(--accent, #6d5efc); font-weight: 600; margin-left: 4px; }
+  .bp-panel:not(.is-peek) .bp-sheet-handle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .bp-panel.is-peek .bp-sheet-handle { padding-bottom: 8px; color: var(--text); }
 
   /* Bottom bar: price on the left, buttons on the right, above the home indicator */
-  .bp-foot {
-    position: sticky; bottom: 0; z-index: 20; gap: 10px;
-    padding: 10px var(--bp-side) max(10px, env(safe-area-inset-bottom));
-  }
+  .bp-foot { gap: 10px; padding: 10px var(--bp-side) max(10px, env(safe-area-inset-bottom)); }
+  .bp-panel.is-peek .bp-foot { border-top: 0; }
   .bp-total { flex: 1; min-width: 0; }
   .bp-total b { font-size: 1.15rem; white-space: nowrap; }
   .bp-total small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bp-nav { flex-shrink: 0; }
   .bp-nav .btn { --pad: 10px 16px; }
+  .bp-nav .btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; margin-right: 6px; }
 
-  .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+  /* Which buttons show: choosing → Back / See result; looking → Edit / Next */
+  .nav-wide { display: none; }
+  .nav-sheet, .nav-peek { display: inline-flex; }
+  .bp-panel.is-peek .nav-sheet, .bp-panel.is-peek .nav-back, .bp-panel:not(.is-peek) .nav-peek { display: none; }
+  .bp-nav .btn[hidden] { display: none !important; }
+
+  .toast { bottom: calc(var(--bp-peek-h) + 12px); }
+  .toast:not(.is-visible) { transform: translate(-50%, calc(var(--bp-peek-h) + 140px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-panel { transition: none; }
 }
 
 /* Phones: tighter header and bottom bar */
@@ -725,17 +734,13 @@ html.bp-lock, html.bp-lock body { overflow: hidden; }
   .bp-nav .btn { --pad: 10px 14px; }
 }
 
-/* Short screens (phone held sideways): no room for the strip,
-   so the preview opens from the "Preview" button in the header */
+/* Short screens (phone held sideways): the sheet goes almost to the top */
 @media (max-height: 560px) {
-  .bp-stage:not(.is-open) { display: none; }
-  .bp-preview-btn {
-    display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; padding: 6px 12px; border-radius: 999px;
-    border: 1px solid var(--border-strong); background: var(--surface); font-size: .8rem; font-weight: 600; color: var(--text);
-  }
-  .bp-preview-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; }
+  :root { --bp-peek-h: calc(112px + env(safe-area-inset-bottom)); }
   .bp-head .logo span { display: none; }
-  .bp-steps { padding-top: 14px; }
+  .bp-panel { height: calc(100dvh - var(--bp-head-h) - 12px); }
+  .bp-panel.is-peek { height: var(--bp-peek-h); }
+  .bp-sheet-handle { padding-top: 6px; }
   .bp-step h1 { font-size: 1.3rem; }
 }
 

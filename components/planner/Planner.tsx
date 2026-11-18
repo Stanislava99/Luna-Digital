@@ -2,6 +2,8 @@
 
 /* ==========================================================
    Rental website planner: 5 steps on the left, live preview on the right.
+   On phones, tablets and short screens the preview fills the screen and the
+   steps sit in a bottom sheet (choose → "See result" → Next).
    Each step has its own URL (/builder, /builder/style, …) so the browser's
    back button works and Vercel Analytics shows where visitors drop off.
    ========================================================== */
@@ -11,7 +13,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } 
 import { LogoMark } from "@/components/Logo";
 import { useToast } from "@/components/Toast";
 import { track } from "@/lib/analytics";
-import { EMAIL_RE, money, openMailClient, prefersReducedMotion, sendToServer } from "@/lib/site";
+import { CONTACT_EMAIL, EMAIL_RE, money, openMailClient, prefersReducedMotion, sendToServer } from "@/lib/site";
 import { EXTRAS, FEATURES, ICON, PACE, STEPS, STYLES, TYPES, type Extra, type Feature, type PaceId, type PlaceType, type StyleId } from "./data";
 import { DEFAULT_PLAN, estimate, loadPlan, placeLoc, placeName, r10, savePlan, slug, toggleFeature, type Plan } from "./plan";
 import { Preview, type PreviewHandle } from "./Preview";
@@ -43,8 +45,9 @@ export function Planner() {
   const preview = useRef<PreviewHandle>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
   const firstStep = useRef(true);
-  /** Phones and short screens: preview opens full screen on demand. */
-  const [fullPreview, setFullPreview] = useState(false);
+  /** Phones, tablets and short screens: the choices sit in a bottom sheet over a
+      full-screen preview. "peek" slides the sheet down so the visitor sees the result. */
+  const [peek, setPeek] = useState(false);
 
   const setPlan = (patch: Partial<Plan>) => setPlanState((p) => ({ ...p, ...patch }));
   const est = useMemo(() => estimate(plan), [plan]);
@@ -59,29 +62,24 @@ export function Planner() {
   }, []);
   useEffect(() => { if (loaded) savePlan({ ...plan, step }); }, [plan, step, loaded]);
 
-  // On every step change: scroll the panel up and move focus to the heading
+  // On every step change: open the sheet, scroll the panel up and move focus to the heading
   useEffect(() => {
+    setPeek(false);
     if (firstStep.current) { firstStep.current = false; return; }
     stepsRef.current?.scrollTo(0, 0);
     const h = stepsRef.current?.querySelector<HTMLElement>(`[data-step="${step}"] h1`);
     h?.focus({ preventScroll: true });
-    if (window.matchMedia(STACKED).matches) window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   }, [step]);
 
-  // Full-screen preview: lock the page behind it, close with Escape
-  useEffect(() => {
-    if (!fullPreview) return;
-    document.documentElement.classList.add("bp-lock");
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setFullPreview(false);
-    const onResize = () => !window.matchMedia(STACKED).matches && setFullPreview(false);
-    window.addEventListener("keydown", onKey);
-    window.addEventListener("resize", onResize);
-    return () => {
-      document.documentElement.classList.remove("bp-lock");
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [fullPreview]);
+  /** Bottom sheet: slide it down to show the website, or back up to keep choosing. */
+  function showResult() {
+    setPeek(true);
+    preview.current?.scrollToTop(!prefersReducedMotion());
+  }
+  function editChoices() {
+    setPeek(false);
+    if (window.matchMedia(STACKED).matches) stepsRef.current?.focus({ preventScroll: true });
+  }
 
   const goTo = (i: number) => router.push(stepUrl(Math.max(0, Math.min(LAST, i))), { scroll: false });
 
@@ -128,15 +126,18 @@ export function Planner() {
           ))}
         </ol>
         <Link href="/" className="bp-back">← Back to site</Link>
-        <button type="button" className="bp-preview-btn" onClick={() => setFullPreview(true)}>
-          <EyeIcon /> Preview
-        </button>
       </header>
 
       <main className="bp-main">
         {/* ============ LEFT: CONTROLS ============ */}
-        <section className="bp-panel" aria-label="Plan your website">
-          <div className="bp-steps" ref={stepsRef}>
+        <section className={`bp-panel${peek ? " is-peek" : ""}`} aria-label="Plan your website">
+          {/* Bottom-sheet handle (phones, tablets, short screens only) */}
+          <button type="button" className="bp-sheet-handle" aria-expanded={!peek} aria-controls="bpSteps"
+            onClick={() => (peek ? editChoices() : showResult())}>
+            <i aria-hidden="true"></i>
+            <span>{peek ? <>Step {step + 1} of {STEPS.length} · {STEPS[step].label} <b>Change</b></> : "Hide choices"}</span>
+          </button>
+          <div className="bp-steps" id="bpSteps" ref={stepsRef} tabIndex={-1}>
             <Step i={0} current={step} title="Tell us about your place" sub="Watch the live preview: it's your future website, building itself as you go.">
               <fieldset className="bp-field">
                 <legend>What do you rent out?</legend>
@@ -236,23 +237,26 @@ export function Planner() {
               <small>about {est.weeksText}{est.monthly ? ` · +€${est.monthly}/month` : ""}</small>
             </div>
             <div className="bp-nav">
-              <button type="button" className="btn btn--ghost" disabled={step === 0} onClick={() => goTo(step - 1)}>Back</button>
-              <button type="button" className="btn btn--primary" hidden={step === LAST} onClick={() => goTo(step + 1)}>
+              {/* Wide screens: Back / Next. Bottom sheet: choose → see the result → next. */}
+              <button type="button" className="btn btn--ghost nav-back" disabled={step === 0} onClick={() => goTo(step - 1)}>Back</button>
+              <button type="button" className="btn btn--primary nav-wide" hidden={step === LAST} onClick={() => goTo(step + 1)}>
                 {step === LAST - 1 ? "See my plan →" : "Next →"}
+              </button>
+              <button type="button" className="btn btn--primary nav-sheet" hidden={step === LAST} onClick={showResult}>
+                <EyeIcon /> See result
+              </button>
+              <button type="button" className="btn btn--ghost nav-peek" onClick={editChoices}>Edit</button>
+              <button type="button" className="btn btn--primary nav-peek" onClick={() => (step === LAST ? editChoices() : goTo(step + 1))}>
+                {step === LAST ? "Send my plan →" : step === LAST - 1 ? "See my plan →" : "Next →"}
               </button>
             </div>
           </div>
         </section>
 
         {/* ============ RIGHT: LIVE PREVIEW ============ */}
-        <section className={`bp-stage${fullPreview ? " is-open" : ""}`} aria-label="Live preview of your website"
-          role={fullPreview ? "dialog" : undefined} aria-modal={fullPreview || undefined}>
+        <section className="bp-stage" aria-label="Live preview of your website">
           <div className="bp-stage__bar">
-            <button type="button" className="bp-stage__close" onClick={() => setFullPreview(false)}>← Back to editing</button>
             <span className="bp-live"><i></i> Live preview</span>
-            <button type="button" className="bp-stage__expand" onClick={() => setFullPreview(true)} aria-label="Open the preview full screen">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg> Full screen
-            </button>
             <div className="bp-device" role="radiogroup" aria-label="Preview device">
               {(["desktop", "phone"] as const).map((d) => (
                 <button key={d} type="button" className={plan.device === d ? "is-on" : undefined} role="radio" aria-checked={plan.device === d} onClick={() => setPlan({ device: d })}>
@@ -334,7 +338,7 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "", founding: true, _gotcha: "" });
   const [bad, setBad] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [doneName, setDoneName] = useState<string | null>(null);
+  const [done, setDone] = useState<{ name: string; mail?: { subject: string; body: string } } | null>(null);
   const set = (patch: Partial<typeof form>) => setForm((f) => ({ ...f, ...patch }));
 
   async function onSubmit(e: FormEvent) {
@@ -362,18 +366,27 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
     ].filter((l) => l !== "").join("\n");
 
     setLoading(true);
+    const firstName = form.name.trim().split(" ")[0];
     const sent = await sendToServer({
       name: form.name.trim(), email: form.email.trim(), company: placeName(plan),
       budget: `${money.format(est.low)}–${money.format(est.high)}`, message,
       ...(form.founding ? { founding: "Yes" } : {}),
     });
-    if (!sent) {
-      openMailClient(`${form.founding ? "[Founding client] " : ""}Website plan: ${placeName(plan)}`, `Name: ${form.name}\nEmail: ${form.email}\n\n${message}`);
-      toast("Opening your email app to finish sending…");
-      await new Promise((r) => setTimeout(r, 600));
-    }
     setLoading(false);
-    setDoneName(form.name.trim().split(" ")[0]);
+    if (!sent) {
+      // Server unavailable: the visitor still has to press Send in their own email app,
+      // so don't claim the plan was sent yet.
+      const mail = {
+        subject: `${form.founding ? "[Founding client] " : ""}Website plan: ${placeName(plan)}`,
+        body: `Name: ${form.name}\nEmail: ${form.email}\n\n${message}`,
+      };
+      openMailClient(mail.subject, mail.body);
+      toast("Opening your email app to finish sending…");
+      setDone({ name: firstName, mail });
+      track("Plan email opened", { type: plan.type, style: plan.style, sections: plan.features.length, estimate: est.low });
+      return;
+    }
+    setDone({ name: firstName });
     router.replace("/builder/sent", { scroll: false }); // recorded as its own page in analytics
     track("Plan sent", { type: plan.type, style: plan.style, sections: plan.features.length, estimate: est.low });
   }
@@ -384,7 +397,7 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
     <div className="bp-step" data-step={LAST} hidden={current !== LAST}>
       <p className="eyebrow">Step {STEPS.length} of {STEPS.length}</p>
       <h1 tabIndex={-1}>Your website plan</h1>
-      {doneName === null ? (
+      {done === null ? (
         <>
           <p className="bp-sub">Here&apos;s everything you picked. Send it and we&apos;ll reply within one business day, free and with no obligation.</p>
           <div className="bp-summary">
@@ -432,11 +445,22 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
       ) : (
         <div className="bp-done">
           <div className="bp-done__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5 10 17l9-10" /></svg>
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">{done.mail ? <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></> : <path d="M5 12.5 10 17l9-10" />}</svg>
           </div>
-          <h2>Plan sent!</h2>
-          <p>Thanks, {doneName}. We&apos;ll look at your plan and reply within one business day with a fixed price and next steps.</p>
-          <Link href="/" className="btn btn--ghost">Back to Luna Digital</Link>
+          {done.mail ? (
+            <>
+              <h2>Almost there, {done.name}!</h2>
+              <p>Your plan is ready in a new email. Press <b>Send</b> in your email app to send it to us. If nothing opened, write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+              <button type="button" className="btn btn--primary" onClick={() => openMailClient(done.mail!.subject, done.mail!.body)}>Open the email again</button>
+              <button type="button" className="btn btn--ghost" onClick={() => setDone(null)}>Back to my plan</button>
+            </>
+          ) : (
+            <>
+              <h2>Plan sent!</h2>
+              <p>Thanks, {done.name}. We&apos;ll look at your plan and reply within one business day with a fixed price and next steps.</p>
+              <Link href="/" className="btn btn--ghost">Back to Luna Digital</Link>
+            </>
+          )}
         </div>
       )}
     </div>
