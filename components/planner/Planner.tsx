@@ -3,7 +3,8 @@
 /* ==========================================================
    Rental website planner: 5 steps on the left, live preview on the right.
    On phones, tablets and short screens the preview fills the screen and the
-   steps sit in a bottom sheet (choose → "See result" → Next).
+   steps sit in a bottom sheet; after the last choice it slides down once to
+   show the website, then goes on to the price.
    Each step has its own URL (/builder, /builder/style, …) so the browser's
    back button works and Vercel Analytics shows where visitors drop off.
    ========================================================== */
@@ -242,12 +243,15 @@ export function Planner() {
               <button type="button" className="btn btn--primary nav-wide" hidden={step === LAST} onClick={() => goTo(step + 1)}>
                 {step === LAST - 1 ? "See my plan →" : "Next →"}
               </button>
-              <button type="button" className="btn btn--primary nav-sheet" hidden={step === LAST} onClick={showResult}>
-                <EyeIcon /> See result
+              {/* Bottom sheet: Next through the choices; after the last choice (Extras)
+                  the sheet slides down once to show the website, then on to the price. */}
+              <button type="button" className="btn btn--primary nav-sheet" hidden={step === LAST}
+                onClick={() => (step === LAST - 1 ? showResult() : goTo(step + 1))}>
+                {step === LAST - 1 ? <><EyeIcon /> See my website</> : "Next →"}
               </button>
               <button type="button" className="btn btn--ghost nav-peek" onClick={editChoices}>Edit</button>
               <button type="button" className="btn btn--primary nav-peek" onClick={() => (step === LAST ? editChoices() : goTo(step + 1))}>
-                {step === LAST ? "Send my plan →" : step === LAST - 1 ? "See my plan →" : "Next →"}
+                {step === LAST ? "Send my plan →" : step === LAST - 1 ? "See my price →" : "Next →"}
               </button>
             </div>
           </div>
