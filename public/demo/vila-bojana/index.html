@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Vila Bojana · Zaovinsko jezero, Tara</title>
+<link rel="icon" href="/demo/vila-bojana/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&display=swap" rel="stylesheet">
@@ -43,7 +44,9 @@ h2 em{font-style:italic;color:#1d9a96}
 nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:30;width:min(1180px,calc(100% - 32px));display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 22px;border-radius:999px;background:rgba(13,38,39,.45);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);color:#fff;transition:background .3s}
 nav.solid{background:rgba(13,38,39,.9)}
 .brand{font-family:var(--serif);font-size:24px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:10px}
-.brand i{width:9px;height:9px;border-radius:50%;background:var(--lake);box-shadow:0 0 14px var(--lake)}
+.brand img{width:36px;height:36px;flex:none}
+.brand span{display:flex;flex-direction:column;line-height:1}
+.brand small{font-family:var(--sans);font-size:9px;font-weight:600;letter-spacing:.24em;color:var(--lake2);margin-top:4px}
 .nl{display:flex;gap:28px;font-size:14px}
 .nl a{text-decoration:none;color:rgba(255,255,255,.8)}.nl a:hover{color:#fff}
 .nr{display:flex;align-items:center;gap:10px}
@@ -223,8 +226,17 @@ nav .btn{padding:11px 20px;font-size:14px}
 .cl .go{width:40px;height:40px;border-radius:50%;background:#dff3f0;display:grid;place-items:center;flex:none;font-style:normal}
 
 footer{background:var(--ink);color:rgba(255,255,255,.55);padding:70px 0 40px}
-footer .big{font-family:var(--serif);font-weight:400;font-size:clamp(60px,12vw,180px);line-height:.9;color:#fff;letter-spacing:-.03em}
-footer .big em{color:var(--lake)}
+.map{margin-top:20px;border-radius:28px;overflow:hidden;height:420px;border:1px solid var(--line);background:var(--sand)}
+.map iframe{display:block;width:100%;height:100%;border:0;filter:saturate(.85)}
+footer .top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px}
+footer .fb{display:flex;align-items:center;gap:16px;text-decoration:none;color:#fff}
+footer .fb img{width:56px;height:56px;flex:none}
+footer .fb b{font-family:var(--serif);font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1}
+footer .fb small{display:block;font-size:10px;font-weight:600;letter-spacing:.24em;color:var(--lake2);margin-top:6px}
+footer .ftag{margin-top:18px;max-width:340px;font-size:15px;line-height:1.6}
+footer h4{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
+footer .col a{display:block;color:rgba(255,255,255,.8);text-decoration:none;font-size:15px;padding:4px 0}
+footer .col a:hover{color:var(--lake2)}
 footer .bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
 .demo{text-decoration:none;position:fixed;left:16px;bottom:16px;z-index:40;background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:9px 15px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 
@@ -273,6 +285,9 @@ footer .bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;m
   .sheet{padding:22px 16px;border-radius:24px}
   .sheet-h h3{font-size:26px}
   .cimg{min-height:300px}
+  .map{height:320px;border-radius:24px}
+  footer .top{grid-template-columns:1fr 1fr;gap:32px}
+  footer .top>div:first-child{grid-column:span 2}
   .demo{left:auto;right:12px;bottom:12px}
 }
 /* Bricolage Grotesque: no italics, tight headings */
@@ -281,7 +296,6 @@ footer .bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;m
 h2.serif{font-weight:500;letter-spacing:-.035em}
 .serif,.brand,.stay h3,.card h3,.offer h3,.sum h3,.cal-h h3,.mo h4,.sheet-h h3{font-weight:500;letter-spacing:-.02em}
 .stat b,.stay .pr b,.ln.t b{font-weight:500;letter-spacing:-.03em}
-footer .big{font-weight:600;letter-spacing:-.05em}
 .quote{font-size:22px;font-weight:400}
 </style>
 </head>
@@ -289,7 +303,7 @@ footer .big{font-weight:600;letter-spacing:-.05em}
 <script>document.documentElement.classList.add('js')</script>
 
 <nav id="nav">
-  <a class="brand" href="#"><i></i>Vila Bojana</a>
+  <a class="brand" href="#"><img src="/demo/vila-bojana/logo.svg" alt=""><span>Vila Bojana<small>ZAOVINE · TARA</small></span></a>
   <div class="nl">
     <a href="#apartmani" data-en="Apartments">Apartmani</a>
     <a href="#dozivljaji" data-en="Experiences">Doživljaji</a>
@@ -487,13 +501,32 @@ footer .big{font-weight:600;letter-spacing:-.05em}
         <a class="cl" href="https://www.google.com/maps/search/?api=1&query=Zaovinsko+jezero"><div><span data-en="Location">Lokacija</span><b data-en="Zaovine, Tara, Serbia">Zaovine, Tara, Srbija</b></div><i class="go">→</i></a>
       </div>
     </div>
+    <div class="map rv"><iframe src="https://www.google.com/maps/embed?origin=mfe&amp;pb=!1m3!2m1!1sZaovinsko+jezero,+Tara!6i12!3m1!1ssr!5m1!1ssr" title="Mapa: Zaovinsko jezero, Tara" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="big">Vila <em>Bojana</em></div>
-    <div class="bot"><span data-en="Apartments with a view of Zaovine Lake.">Apartmani sa pogledom na Zaovinsko jezero.</span><a href="https://lunadigital.pro" target="_blank" rel="noopener" style="color:inherit" data-en="Demo website by Luna Digital · lunadigital.pro">Demo sajt izradila Luna Digital · lunadigital.pro</a></div>
+    <div class="top">
+      <div>
+        <a class="fb" href="#"><img src="/demo/vila-bojana/logo.svg" alt=""><span><b>Vila Bojana</b><small>ZAOVINE · TARA</small></span></a>
+        <p class="ftag" data-en="Five luxury apartments above the turquoise Zaovine Lake, in the heart of Tara National Park.">Pet LUX apartmana iznad tirkiznog Zaovinskog jezera, u srcu Nacionalnog parka Tara.</p>
+      </div>
+      <div class="col">
+        <h4 data-en="Explore">Istražite</h4>
+        <a href="#apartmani" data-en="Apartments">Apartmani</a>
+        <a href="#dozivljaji" data-en="Experiences">Doživljaji</a>
+        <a href="#sezone" data-en="Seasons">Sezone</a>
+        <a href="#rezervacija" data-en="Booking">Rezervacija</a>
+      </div>
+      <div class="col">
+        <h4 data-en="Contact">Kontakt</h4>
+        <a href="tel:+381655171111">+381 65 517 1111</a>
+        <a href="https://www.instagram.com/vilabojanazaovine/">@vilabojanazaovine</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Zaovinsko+jezero" data-en="Zaovine, Tara, Serbia">Zaovine, Tara, Srbija</a>
+      </div>
+    </div>
+    <div class="bot"><span>© 2026 Vila Bojana · Zaovine, Tara</span><a href="https://lunadigital.pro" target="_blank" rel="noopener" style="color:inherit" data-en="Demo website by Luna Digital · lunadigital.pro">Demo sajt izradila Luna Digital · lunadigital.pro</a></div>
     <p style="font-size:11px;margin-top:14px;color:rgba(255,255,255,.35)">Fotografije jezera: Wikimedia Commons (Damir Simović, TarjaMitrovic, Cedomir Zarkovic, Marko Randjic), CC BY-SA 4.0. Ostale fotografije: @vilabojanazaovine.</p>
   </div>
 </footer>

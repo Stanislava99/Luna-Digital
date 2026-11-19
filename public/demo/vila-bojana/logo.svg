@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!-- Vila Bojana mark: Tara ridge, pines and the sun over Zaovine Lake -->
+  <circle cx="20" cy="20" r="19" fill="#0d2627"/>
+  <circle cx="20" cy="20" r="17.2" stroke="#3fc1bd" stroke-width="1.4"/>
+  <circle cx="27" cy="12.2" r="2.6" fill="#d9884a"/>
+  <path d="M6.5 24.5 13.5 16.5 17.5 20.5 23 13.5 33.5 24.5" stroke="#efe7d8" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M12 24.5 14 19.6 16 24.5ZM15.2 24.5 17.2 18.4 19.2 24.5Z" fill="#9fe3dc"/>
+  <path d="M8.5 27.6H31.5M12 30.8H28M16 33.8H24" stroke="#3fc1bd" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
