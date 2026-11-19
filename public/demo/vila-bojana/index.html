@@ -7,15 +7,15 @@
 <title>Vila Bojana · Zaovinsko jezero, Tara</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant:wght@400;500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#0d2627; --ink2:#133536;
   --lake:#3fc1bd; --lake2:#9fe3dc; --wood:#d9884a;
   --sand:#efe7d8; --paper:#f8f5ef; --muted:#6f7a76; --line:rgba(13,38,39,.1);
   --r:22px;
-  --serif:Italiana,Cormorant,Georgia,serif;
-  --sans:Jost,system-ui,sans-serif;
+  --serif:"Bricolage Grotesque",system-ui,sans-serif;
+  --sans:"Bricolage Grotesque",system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -275,11 +275,14 @@ footer .bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;m
   .cimg{min-height:300px}
   .demo{left:auto;right:12px;bottom:12px}
 }
-/* Italiana has no italic: accents use colour instead */
+/* Bricolage Grotesque: no italics, tight headings */
 .hero h1 em,h1 em,h2 em,.quote,.quote span{font-style:normal}
-.hero h1{letter-spacing:0;line-height:1}
-h2.serif{letter-spacing:0}
-.serif,.brand,.stay h3,.card h3,.offer h3,.sum h3,.cal-h h3,.mo h4,.sheet-h h3,footer .big{font-weight:400}
+.hero h1{font-weight:500;letter-spacing:-.04em;line-height:.95;font-size:clamp(56px,8vw,128px)}
+h2.serif{font-weight:500;letter-spacing:-.035em}
+.serif,.brand,.stay h3,.card h3,.offer h3,.sum h3,.cal-h h3,.mo h4,.sheet-h h3{font-weight:500;letter-spacing:-.02em}
+.stat b,.stay .pr b,.ln.t b{font-weight:500;letter-spacing:-.03em}
+footer .big{font-weight:600;letter-spacing:-.05em}
+.quote{font-size:22px;font-weight:400}
 </style>
 </head>
 <body>
