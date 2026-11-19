@@ -3,7 +3,7 @@ import { Planner } from "@/components/planner/Planner";
 import "./builder.css";
 
 export const metadata: Metadata = {
-  title: "Plan Your Rental Website · Luna Digital",
+  title: "Plan Your Rental Website",
   description:
     "Design your holiday rental or guesthouse website step by step and see it come to life. Pick a style, choose sections like gallery, calendar and online booking, and get an instant price.",
   alternates: { canonical: "/builder" },

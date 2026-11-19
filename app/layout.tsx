@@ -3,20 +3,42 @@ import { Analytics } from "@vercel/analytics/next";
 import { ToastProvider } from "@/components/Toast";
 import "./styles.css";
 
-const FAVICON =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M20 4a12 12 0 1 0 8 20A10 10 0 0 1 20 4z' fill='%234f46e5'/%3E%3C/svg%3E";
+import { SITE_URL } from "@/lib/site";
 
+/*
+ * Favicon, share image and apple icon come from app/icon.svg, app/opengraph-image.tsx and
+ * app/apple-icon.tsx. Google Search Console: set GOOGLE_SITE_VERIFICATION in Vercel to the
+ * code from the "HTML tag" method (only the content="..." value), then redeploy.
+ */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lunadigital.pro"),
-  title: "Luna Digital · Booking Websites for Rentals & Small Businesses",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Luna Digital · Booking Websites for Rentals & Small Businesses",
+    template: "%s · Luna Digital",
+  },
   description:
     "Luna Digital builds booking websites for holiday rentals, guesthouses and small businesses: online booking, calendars synced with Airbnb and Booking.com, clear prices from €200.",
+  applicationName: "Luna Digital",
+  keywords: [
+    "booking website",
+    "holiday rental website",
+    "vacation rental website",
+    "guesthouse website",
+    "direct booking website",
+    "Airbnb calendar sync",
+    "Booking.com calendar sync",
+    "website for small business",
+  ],
   alternates: { canonical: "/" },
-  icons: { icon: FAVICON },
+  robots: { index: true, follow: true, googleBot: { "max-image-preview": "large", "max-snippet": -1 } },
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
   openGraph: {
     type: "website",
     url: "/",
     siteName: "Luna Digital",
+    locale: "en_GB",
     title: "Luna Digital · Websites that bring you more bookings",
     description: "Booking websites for holiday rentals, guesthouses and small businesses. Clear prices from €200.",
   },

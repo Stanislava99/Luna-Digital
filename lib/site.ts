@@ -1,4 +1,5 @@
 /** Site-wide settings and small helpers shared by the homepage and the planner. */
+export const SITE_URL = "https://lunadigital.pro";
 export const CONTACT_EMAIL = "contact@lunadigital.pro";
 export const FORM_ENDPOINT = "/api/contact";
 
