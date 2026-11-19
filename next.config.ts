@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       { source: "/builder.html", destination: "/builder", permanent: true },
     ];
   },
+  // Client demo pages live as static files in public/demo/<name>/index.html
+  async rewrites() {
+    return [{ source: "/demo/:slug", destination: "/demo/:slug/index.html" }];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
