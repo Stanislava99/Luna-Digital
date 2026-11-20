@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Villa Monteverde · Goč</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1b16; --ink2:#16241e;
+  --gold:#d9925a; --gold2:#f2c79c;
+  --cream:#efe6d8; --paper:#f8f5ef; --muted:#77786f; --line:rgba(15,27,22,.1);
+  --pine:#2f5d4f;
+  --r:22px;
+  --serif:"Bricolage Grotesque",system-ui,sans-serif;
+  --sans:"Bricolage Grotesque",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);font-weight:400;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit}
+button{font-family:inherit}
+.serif{font-family:var(--serif);font-weight:500;letter-spacing:-.02em}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+section{padding:110px 0}
+.kicker{display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.kicker:before{content:"";width:26px;height:1px;background:currentColor}
+h2.serif{font-size:clamp(42px,5.4vw,78px);line-height:1;margin:18px 0 20px;letter-spacing:-.035em}
+h2 em{font-style:normal;color:var(--gold)}
+.lead{font-size:18px;font-weight:300;color:var(--muted);max-width:560px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ink);font-weight:500;font-size:15px;letter-spacing:.01em;padding:16px 26px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{background:var(--gold2);transform:translateY(-2px)}
+.btn .arr{transition:transform .2s}.btn:hover .arr{transform:translateX(4px)}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.dark:hover{background:#24362e}
+.link{background:none;border:0;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px;cursor:pointer;color:var(--ink)}
+
+/* nav */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:30;width:min(1180px,calc(100% - 32px));display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 22px;border-radius:999px;background:rgba(15,27,22,.35);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);color:#fff;transition:background .3s}
+nav.solid{background:rgba(15,27,22,.86)}
+.brand{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.03em;text-decoration:none;color:#fff;display:flex;align-items:center;gap:10px}
+.brand svg{width:22px;height:22px;stroke:var(--gold2);fill:none;stroke-width:1.6}
+.nl{display:flex;gap:28px;font-size:14px;letter-spacing:.02em}
+.nl a{text-decoration:none;color:rgba(255,255,255,.8)}.nl a:hover{color:#fff}
+.nr{display:flex;align-items:center;gap:10px}
+.lang{display:flex;background:rgba(255,255,255,.1);border-radius:999px;padding:3px}
+.lang button{border:0;background:none;color:rgba(255,255,255,.7);font-size:11px;font-weight:600;padding:7px 11px;border-radius:999px;cursor:pointer;letter-spacing:.1em}
+.lang button.on{background:#fff;color:var(--ink)}
+nav .btn{padding:11px 20px;font-size:14px}
+
+/* hero */
+.hero{position:relative;height:100vh;min-height:700px;color:#fff;overflow:hidden;background:var(--ink)}
+.hero>img{position:absolute;inset:0;object-position:60% 50%;transform:scale(1.06);animation:zoom 18s ease-out forwards}
+@keyframes zoom{to{transform:scale(1)}}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,11,.5) 0%,rgba(8,14,11,.05) 30%,rgba(8,14,11,.25) 58%,rgba(8,14,11,.92) 100%)}
+.hero .in{position:absolute;z-index:3;left:0;right:0;bottom:0;padding-bottom:56px}
+.hero .kicker{color:var(--gold2)}
+.hero h1{font-size:clamp(56px,8.2vw,132px);line-height:.94;margin:18px 0 28px;max-width:1080px;font-weight:500;letter-spacing:-.045em}
+.hero h1 em{font-style:normal;color:var(--gold2)}
+.hero .row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.hero p{font-size:18px;font-weight:300;color:rgba(255,255,255,.86);max-width:440px}
+
+/* booking glass */
+.glass{position:relative;display:flex;align-items:stretch;gap:4px;background:rgba(255,255,255,.12);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:6px}
+.field{display:block;text-align:left;background:none;border:0;color:#fff;padding:10px 22px;border-radius:999px;cursor:pointer;min-width:140px;transition:background .2s}
+.field:hover,.field.act{background:rgba(255,255,255,.14)}
+.field span{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);font-weight:600}
+.field strong{display:block;font-size:16px;font-weight:500;white-space:nowrap}
+.sep{width:1px;background:rgba(255,255,255,.16);margin:10px 0}
+
+/* calendar (shared) */
+.cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.nav-b{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;display:grid;place-items:center;font-size:18px;color:var(--ink);transition:background .15s,opacity .15s}
+.nav-b:hover{background:var(--cream)}
+.nav-b:disabled{opacity:.3;cursor:default;background:#fff}
+.months{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+.mo h4{font-family:var(--serif);font-weight:500;font-size:21px;letter-spacing:-.02em;text-align:center;margin-bottom:12px;text-transform:capitalize}
+.wk,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+.wk div{text-align:center;font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--muted);padding:6px 0 10px;text-transform:uppercase}
+.day{position:relative;height:52px;display:flex;align-items:center;justify-content:center;margin:2px 0}
+.day .n{position:relative;z-index:1;width:46px;height:46px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:500;line-height:1.1;cursor:pointer;transition:box-shadow .15s,background .15s}
+.day .n small{font-size:9.5px;font-weight:400;color:var(--muted);margin-top:2px}
+.day:not(.off):not(.e) .n:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.day.off .n{color:#cdc7bc;cursor:default}
+.day.off .n b{font-weight:400;text-decoration:line-through}
+.day.off small{visibility:hidden}
+.day.e .n{cursor:default}
+.day.in{background:var(--cream)}
+.day.a.has-b{background:linear-gradient(90deg,transparent 50%,var(--cream) 50%)}
+.day.b{background:linear-gradient(90deg,var(--cream) 50%,transparent 50%)}
+.day.a .n,.day.b .n{background:var(--ink);color:#fff}
+.day.a .n small,.day.b .n small{color:rgba(255,255,255,.65)}
+.cal-leg{display:flex;gap:20px;margin-top:16px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.cal-leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(10,16,13,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:16px}
+.modal.on{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{background:#fff;color:var(--ink);border-radius:30px;padding:28px 30px;width:min(780px,100%);max-height:calc(100vh - 32px);overflow:auto;box-shadow:0 40px 80px rgba(0,0,0,.3);animation:up .25s ease}
+@keyframes up{from{transform:translateY(16px);opacity:0}}
+.sheet-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.sheet-h h3{font-family:var(--serif);font-weight:500;letter-spacing:-.03em;font-size:30px;line-height:1.1}
+.sheet-h p{color:var(--muted);font-size:15px}
+.x{width:40px;height:40px;border-radius:50%;border:0;background:var(--paper);cursor:pointer;font-size:20px;flex:none}
+.sheet-f{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+
+/* guests popover */
+.gpop{position:absolute;right:0;bottom:calc(100% + 12px);width:330px;background:#fff;color:var(--ink);border-radius:24px;padding:10px 22px 18px;box-shadow:0 30px 60px rgba(0,0,0,.3);display:none;z-index:10}
+.gpop.on{display:block;animation:up .2s ease}
+.grow{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.grow b{display:block;font-weight:500;font-size:16px}
+.grow small{color:var(--muted);font-size:13px}
+.step{display:flex;align-items:center;gap:14px}
+.step button{width:36px;height:36px;border-radius:50%;border:1px solid #cfc9be;background:#fff;font-size:18px;line-height:1;cursor:pointer;color:var(--ink);display:grid;place-items:center;transition:border-color .15s}
+.step button:hover:not(:disabled){border-color:var(--ink)}
+.step button:disabled{opacity:.3;cursor:default}
+.step output{min-width:18px;text-align:center;font-weight:500;font-size:17px}
+.gpop .note2{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
+.gpop .btn{width:100%;justify-content:center;margin-top:14px;padding:13px}
+
+/* stats */
+.stats{background:var(--ink);color:#fff;padding:36px 0}
+.stats .wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+.stat b{display:block;font-family:var(--serif);font-weight:500;letter-spacing:-.04em;font-size:48px;line-height:1;color:var(--gold2)}
+.stat span{font-size:13px;font-weight:300;letter-spacing:.02em;color:rgba(255,255,255,.65)}
+
+/* intro bento */
+.intro{display:grid;grid-template-columns:1fr 1.15fr;gap:70px;align-items:center}
+.bento{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:260px 200px;gap:14px}
+.bento div{border-radius:var(--r);overflow:hidden}
+.bento div:first-child{grid-row:span 2}
+.quote{margin-top:30px;padding-left:20px;border-left:2px solid var(--gold);font-size:22px;line-height:1.35;font-weight:400;letter-spacing:-.01em}
+.quote small{display:block;font-size:13px;color:var(--muted);margin-top:10px;letter-spacing:.02em}
+
+/* villa */
+.dark{background:var(--ink);color:#fff}
+.dark .kicker{color:rgba(255,255,255,.55)}
+.dark .lead{color:rgba(255,255,255,.65)}
+.stays{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;margin-top:50px}
+.stay{position:relative;border-radius:28px;overflow:hidden;min-height:580px;display:flex;align-items:flex-end;isolation:isolate}
+.stay img{position:absolute;inset:0;z-index:-2;transition:transform .8s}
+.stay:hover img{transform:scale(1.04)}
+.stay:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 30%,rgba(8,14,11,.94))}
+.stay .c{padding:32px;width:100%}
+.tag{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);padding:7px 12px;border-radius:999px;margin-bottom:14px}
+.stay h3{font-family:var(--serif);font-weight:500;letter-spacing:-.035em;font-size:46px;line-height:1}
+.stay p{color:rgba(255,255,255,.75);font-weight:300;margin:10px 0 18px;max-width:460px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-size:13px;border:1px solid rgba(255,255,255,.22);padding:6px 12px;border-radius:999px}
+.stay .pr{display:flex;justify-content:space-between;align-items:flex-end;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.15)}
+.stay .pr b{font-family:var(--serif);font-weight:500;letter-spacing:-.03em;font-size:42px;color:var(--gold2);line-height:1}
+.stay .pr small{color:rgba(255,255,255,.6);font-size:13px}
+.stay.lite:after{background:linear-gradient(180deg,rgba(8,14,11,.1) 10%,rgba(8,14,11,.55) 45%,rgba(8,14,11,.96) 78%)}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.strip div{height:240px;border-radius:var(--r);overflow:hidden}
+.note{font-size:12px;color:rgba(255,255,255,.4);margin-top:18px}
+
+/* rooms list */
+.rooms{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:20px;background:rgba(255,255,255,.1);border-radius:var(--r);overflow:hidden}
+.rooms div{background:var(--ink2);padding:22px 24px}
+.rooms b{display:block;font-weight:500;font-size:17px;letter-spacing:-.01em}
+.rooms span{font-size:14px;font-weight:300;color:rgba(255,255,255,.6)}
+
+/* included */
+.inc{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(15,27,22,.08)}
+.card .ic{width:46px;height:46px;border-radius:14px;background:var(--cream);display:grid;place-items:center;margin-bottom:18px}
+.card .ic svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.6}
+.card h3{font-family:var(--serif);font-size:23px;font-weight:500;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px}
+.card p{font-size:15px;font-weight:300;color:var(--muted)}
+.card.big{grid-row:span 2;padding:0;overflow:hidden;display:flex;flex-direction:column;background:var(--ink);color:#fff;border:0}
+.card.big .ph{height:320px}
+.card.big .t{padding:28px}
+.card.big p{color:rgba(255,255,255,.7)}
+
+/* seasons */
+.winter{position:relative;color:#fff;overflow:hidden;background:#0c1511}
+.winter>img{position:absolute;inset:0;opacity:.45;filter:saturate(.7) brightness(.75)}
+.winter:before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 70% 15%,rgba(242,199,156,.14),transparent 60%),linear-gradient(180deg,rgba(12,21,17,.35),rgba(12,21,17,.95))}
+.winter .wrap{position:relative;z-index:2}
+.winter .kicker{color:var(--gold2)}
+.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
+.offer{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:10px;min-height:250px}
+.offer .tag{align-self:flex-start;background:rgba(217,146,90,.2);color:var(--gold2);margin:0}
+.offer h3{font-family:var(--serif);font-weight:500;letter-spacing:-.03em;font-size:34px;line-height:1.05}
+.offer p{color:rgba(255,255,255,.68);font-weight:300;font-size:15px}
+.offer a{margin-top:auto;color:var(--gold2);font-weight:500;text-decoration:none;font-size:14px}
+
+/* booking */
+.book{display:grid;grid-template-columns:1.35fr .85fr;gap:24px;margin-top:50px;align-items:start}
+.cal{background:#fff;border:1px solid var(--line);border-radius:30px;padding:30px}
+.cal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+.cal-h h3{font-family:var(--serif);font-weight:500;letter-spacing:-.03em;font-size:28px}
+.pill{font-size:13px;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+.sum{background:var(--ink);color:#fff;border-radius:30px;padding:30px;position:sticky;top:96px}
+.sum .ph{height:160px;border-radius:16px;overflow:hidden;margin-bottom:20px}
+.sum h3{font-family:var(--serif);font-weight:500;letter-spacing:-.03em;font-size:30px;line-height:1.05}
+.sum .sub{font-size:14px;color:rgba(255,255,255,.6);margin:6px 0 18px}
+.ln{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:15px;font-weight:300}
+.ln b{font-weight:500}
+.ln.z b{color:#93e3ad}
+.ln.t{border:0;padding-top:18px;align-items:baseline}
+.ln.t b{font-family:var(--serif);font-weight:500;letter-spacing:-.03em;font-size:44px;color:var(--gold2)}
+.sum .btn{width:100%;justify-content:center;margin-top:16px}
+.save{margin-top:14px;font-size:13px;background:rgba(147,227,173,.1);border:1px solid rgba(147,227,173,.28);color:#cdf2d9;border-radius:14px;padding:12px 14px}
+.empty{color:rgba(255,255,255,.55);font-size:15px;padding:20px 0}
+.kids{font-size:13px;color:var(--muted);margin-top:16px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:50px}
+.cimg{border-radius:28px;overflow:hidden;min-height:440px}
+.clist{display:flex;flex-direction:column;gap:12px}
+.cl{display:flex;justify-content:space-between;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 24px;text-decoration:none;transition:border-color .2s}
+.cl:hover{border-color:var(--gold)}
+.cl span{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.cl b{font-size:18px;font-weight:500;display:block;margin-top:2px;word-break:break-word}
+.cl .go{width:40px;height:40px;border-radius:50%;background:var(--cream);display:grid;place-items:center;flex:none;font-style:normal}
+.map{border-radius:20px;overflow:hidden;border:1px solid var(--line);flex:1;min-height:200px}
+.map iframe{width:100%;height:100%;min-height:200px;border:0;display:block}
+
+footer{background:var(--ink);color:rgba(255,255,255,.55);padding:70px 0 40px}
+footer .big{font-family:var(--serif);font-weight:600;font-size:clamp(56px,11vw,176px);line-height:.88;color:#fff;letter-spacing:-.055em}
+footer .big em{font-style:normal;color:var(--gold)}
+footer .bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
+.demo{text-decoration:none;position:fixed;left:16px;bottom:16px;z-index:40;background:#fff;color:var(--ink);font-size:12px;font-weight:600;letter-spacing:.03em;padding:9px 15px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+
+/* reveal */
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.js .rv.on{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .nl{display:none}
+  .stats .wrap{grid-template-columns:repeat(3,1fr)}
+  .intro,.stays,.book,.contact{grid-template-columns:1fr}
+  .inc,.offers{grid-template-columns:1fr 1fr}
+  .card.big{grid-row:auto;grid-column:span 2}
+  .strip,.rooms{grid-template-columns:1fr 1fr}
+  .sum{position:static}
+}
+@media (max-width:720px){
+  .months{grid-template-columns:1fr}
+  .months .mo:nth-child(2){display:none}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  section{padding:76px 0}
+  nav{padding:8px 8px 8px 16px}
+  nav .btn{display:none}
+  .brand{font-size:19px}
+  .hero{min-height:660px}
+  .hero .in{padding-bottom:30px}
+  .hero h1{font-size:50px}
+  .hero .kicker{font-size:10px;letter-spacing:.18em}
+  .hero p{font-size:16px}
+  .glass{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:24px}
+  .glass .sep{display:none}
+  .field{min-width:0;padding:10px 14px;border-radius:16px}
+  .field.g{grid-column:span 2}
+  .glass .btn{grid-column:span 2;justify-content:center}
+  .gpop{width:auto;left:0;right:0}
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .stat b{font-size:38px}
+  .bento{grid-template-rows:200px 150px}
+  .stay{min-height:500px}
+  .stay .c{padding:24px}
+  .stay h3{font-size:36px}
+  .inc,.offers{grid-template-columns:1fr}
+  .card.big{grid-column:auto}
+  .strip div{height:160px}
+  .rooms{grid-template-columns:1fr}
+  .cal{padding:18px 14px;border-radius:24px}
+  .day{height:46px}
+  .day .n{width:40px;height:40px;font-size:14px}
+  .sheet{padding:22px 16px;border-radius:24px}
+  .sheet-h h3{font-size:24px}
+  .cimg{min-height:300px}
+  .demo{left:auto;right:12px;bottom:12px}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<nav id="nav">
+  <a class="brand" href="#"><svg viewBox="0 0 24 24"><path d="M12 3 3 20h18L12 3Z"/><path d="M12 9.5 8.2 17h7.6L12 9.5Z"/></svg>Villa Monteverde</a>
+  <div class="nl">
+    <a href="#vila" data-en="The villa">Vila</a>
+    <a href="#dozivljaji" data-en="Experiences">Doživljaji</a>
+    <a href="#ponude" data-en="Offers">Ponude</a>
+    <a href="#kontakt" data-en="Contact">Kontakt</a>
+  </div>
+  <div class="nr">
+    <div class="lang"><button class="on" data-l="sr">SR</button><button data-l="en">EN</button></div>
+    <a class="btn" href="#rezervacija" data-en="Book">Rezerviši</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="/demo/villa-monteverde/photos/hero.jpg" alt="Villa Monteverde, A-frame vikendica na Goču">
+  <div class="in wrap">
+    <span class="kicker" data-en="Goč, Serbia · Luxury A-frame villa">Goč, Srbija · Luksuzna A-frame vila</span>
+    <h1 class="serif"><span data-en="Luxury and rest,">Luksuz i odmor,</span><br><em data-en="in a single view">u jednom pogledu</em></h1>
+    <div class="row">
+      <p data-en="A private A-frame villa on Goč with a pool, a jacuzzi and a view over the mountains. Where moments become memories.">Privatna A-frame vila na Goču, sa bazenom, đakuzijem i pogledom na planine. Mesto gde trenuci postaju uspomene.</p>
+      <div class="glass" id="glass">
+        <button type="button" class="field" data-open="dates"><span data-en="Check-in">Dolazak</span><strong id="hA"></strong></button>
+        <i class="sep"></i>
+        <button type="button" class="field" data-open="dates"><span data-en="Check-out">Odlazak</span><strong id="hB"></strong></button>
+        <i class="sep"></i>
+        <button type="button" class="field g" id="gBtn"><span data-en="Guests">Gosti</span><strong id="hG"></strong></button>
+        <a class="btn" href="#rezervacija"><span data-en="Check">Proveri</span> <span class="arr">→</span></a>
+        <div class="gpop" id="gpop">
+          <div class="grow"><div><b data-en="Adults">Odrasli</b><small data-en="13 years and older">13 i više godina</small></div><div class="step"><button type="button" data-k="ad" data-s="-1" aria-label="−">−</button><output id="oAd"></output><button type="button" data-k="ad" data-s="1" aria-label="+">+</button></div></div>
+          <div class="grow"><div><b data-en="Children">Deca</b><small data-en="Up to 12 years">Do 12 godina</small></div><div class="step"><button type="button" data-k="ch" data-s="-1" aria-label="−">−</button><output id="oCh"></output><button type="button" data-k="ch" data-s="1" aria-label="+">+</button></div></div>
+          <p class="note2" data-en="The whole villa is yours: three bedrooms, up to 6 guests.">Cela vila je samo vaša: tri spavaće sobe, do 6 osoba.</p>
+          <button type="button" class="btn dark" id="gDone" data-en="Done">Gotovo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="modal" id="dModal">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="sheet-h">
+      <div><h3 id="dTitle"></h3><p id="dSub"></p></div>
+      <button class="x" type="button" data-close aria-label="Zatvori">×</button>
+    </div>
+    <div id="calM"></div>
+    <div class="sheet-f">
+      <button type="button" class="link" id="dClear" data-en="Clear dates">Obriši datume</button>
+      <button type="button" class="btn dark" data-close data-en="Confirm">Potvrdi</button>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b>3</b><span data-en="bedrooms">spavaće sobe</span></div>
+    <div class="stat"><b>100 m²</b><span data-en="all to yourselves">samo za vas</span></div>
+    <div class="stat"><b>✓</b><span data-en="pool and jacuzzi">bazen i đakuzi</span></div>
+    <div class="stat"><b>9,8</b><span data-en="guest rating">ocena gostiju</span></div>
+    <div class="stat"><b>✓</b><span data-en="free bikes and parking">bicikli i parking gratis</span></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap intro">
+    <div class="rv">
+      <span class="kicker" data-en="Welcome to Villa Monteverde">Dobrodošli u Villa Monteverde</span>
+      <h2 class="serif"><span data-en="Where moments">Gde trenuci</span> <em data-en="become memories">postaju uspomene</em></h2>
+      <p class="lead" data-en="Wood, glass and a view of the Goč hills from every room. A modern A-frame house for slow mornings, evenings in the jacuzzi and the kind of quiet you only find on the mountain.">Drvo, staklo i pogled na brda Goča iz svake sobe. Moderna A-frame kuća za spora jutra, večeri u đakuziju i tišinu kakvu nađete samo na planini.</p>
+      <div class="quote"><span data-en="“A true paradise and our best stay ever! The host thought of every single detail.”">„Pravi raj i naš najbolji smeštaj ikad! Domaćin je mislio na svaki detalj.”</span><small data-en="A guest review">Utisak gosta</small></div>
+    </div>
+    <div class="bento rv">
+      <div><img src="/demo/villa-monteverde/photos/bedroom.jpg" alt="" style="object-position:50% 40%"></div>
+      <div><img src="/demo/villa-monteverde/photos/living.jpg" alt="" style="object-position:50% 60%"></div>
+      <div><img src="/demo/villa-monteverde/photos/bath.jpg" alt="" style="object-position:50% 45%"></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="vila">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker" data-en="The villa">Vila</span>
+      <h2 class="serif"><span data-en="The whole house,">Cela kuća,</span> <em data-en="just for you">samo za vas</em></h2>
+      <p class="lead" data-en="No shared spaces and no neighbours on the other side of the wall. You book the whole villa, with its terrace, pool and jacuzzi.">Bez deljenih prostora i bez komšija iza zida. Rezervišete celu vilu, sa terasom, bazenom i đakuzijem.</p>
+    </div>
+    <div class="stays">
+      <article class="stay rv">
+        <img src="/demo/villa-monteverde/photos/sunset.jpg" alt="" style="object-position:50% 55%">
+        <div class="c">
+          <span class="tag" data-en="Up to 6 guests">Do 6 osoba</span>
+          <h3>Villa Monteverde</h3>
+          <p data-en="Three bedrooms, an open living room with a fireplace, a fully equipped kitchen and a terrace with a jacuzzi looking out over the mountains.">Tri spavaće sobe, otvorena dnevna soba sa kaminom, potpuno opremljena kuhinja i terasa sa đakuzijem okrenuta ka planinama.</p>
+          <div class="chips"><span data-en="Jacuzzi">Đakuzi</span><span data-en="Pool (summer)">Bazen (leto)</span><span data-en="Air conditioning">Klima</span><span>Netflix</span><span>Wi-Fi</span></div>
+          <div class="pr"><small data-en="from / night">od / noć</small><b>€140</b></div>
+        </div>
+      </article>
+      <article class="stay lite rv">
+        <img src="/demo/villa-monteverde/photos/celebrate.jpg" alt="" style="object-position:50% 40%">
+        <div class="c">
+          <span class="tag" data-en="Special occasions">Posebne prilike</span>
+          <h3 data-en="Celebrations like in a film">Proslava kao iz filma</h3>
+          <p data-en="Birthdays, proposals, anniversaries. We set up the decor, the table and the flowers, you just arrive.">Rođendani, prosidbe, godišnjice. Mi pripremimo dekor, sto i cveće, vi samo dođete.</p>
+          <div class="chips"><span data-en="Decor">Dekoracija</span><span data-en="Outdoor table">Sto napolju</span><span data-en="Custom plan">Po dogovoru</span></div>
+          <div class="pr"><small data-en="price">cena</small><b data-en="on request">na upit</b></div>
+        </div>
+      </article>
+    </div>
+    <div class="rooms rv">
+      <div><b data-en="3 bedrooms">3 spavaće sobe</b><span data-en="Double beds, views of the hills">Bračni kreveti, pogled na brda</span></div>
+      <div><b data-en="Living room">Dnevna soba</b><span data-en="Fireplace, TV with Netflix">Kamin, TV sa Netflixom</span></div>
+      <div><b data-en="Kitchen">Kuhinja</b><span data-en="Fully equipped, washing machine">Potpuno opremljena, veš-mašina</span></div>
+      <div><b data-en="Bathroom">Kupatilo</b><span data-en="Freestanding bathtub">Samostojeća kada</span></div>
+    </div>
+    <div class="strip rv">
+      <div><img src="/demo/villa-monteverde/photos/night.jpg" alt="" style="object-position:50% 45%"></div>
+      <div><img src="/demo/villa-monteverde/photos/window.jpg" alt=""></div>
+      <div><img src="/demo/villa-monteverde/photos/pool.jpg" alt="" style="object-position:50% 60%"></div>
+      <div><img src="/demo/villa-monteverde/photos/front.jpg" alt=""></div>
+    </div>
+    <p class="note" data-en="* Demo: prices are examples and are easily changed.">* Demo: cene su primer i lako se menjaju.</p>
+  </div>
+</section>
+
+<section id="dozivljaji">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker" data-en="Experiences">Doživljaji</span>
+      <h2 class="serif"><span data-en="One holiday,">Jedan odmor,</span> <em data-en="countless ways to spend it">bezbroj načina da ga provedete</em></h2>
+    </div>
+    <div class="inc">
+      <div class="card big rv">
+        <div class="ph"><img src="/demo/villa-monteverde/photos/hottub.jpg" alt="" style="object-position:50% 40%"></div>
+        <div class="t"><h3 data-en="A jacuzzi with a view">Đakuzi sa pogledom</h3><p data-en="Warm water, a glass of wine and the whole valley in front of you. Best at sunset, and even better in winter.">Topla voda, čaša vina i cela dolina ispred vas. Najlepše u zalazak sunca, a zimi još lepše.</p></div>
+      </div>
+      <div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 16c2 0 2-1.5 4-1.5S8 16 10 16s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M2 20c2 0 2-1.5 4-1.5S8 20 10 20s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M8 12V5a2 2 0 0 1 4 0M14 12V5a2 2 0 0 1 4 0M8 8h6"/></svg></div><h3 data-en="Private pool">Privatni bazen</h3><p data-en="Open in summer, with sun loungers and a view of the meadows.">Otvoren tokom leta, sa ležaljkama i pogledom na livade.</p></div>
+      <div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c2 3 5 4.5 5 8a5 5 0 0 1-10 0c0-3.5 3-5 5-8Z"/><path d="M4 21h16"/></svg></div><h3 data-en="Fire pit & barbecue">Vatra i roštilj</h3><p data-en="A stone fire pit and a barbecue in the garden for long summer evenings.">Kamena vatra i roštilj u dvorištu, za duge letnje večeri.</p></div>
+      <div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="17" r="3.5"/><circle cx="18.5" cy="17" r="3.5"/><path d="M5.5 17 9 9h6l3.5 8M9 9 12 17h-1M14 6h3"/></svg></div><h3 data-en="Bikes & forest trails">Bicikli i staze Goča</h3><p data-en="Pine forests and walking trails right outside the door. The bikes are on us.">Borove šume i staze odmah ispred vrata. Bicikli su na nama.</p></div>
+      
+      <div class="card rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17h12M9 10h6l3 7M9 10l-3 7M12 6h3"/></svg></div><h3 data-en="ATV rides">Vožnja kvadovima</h3><p data-en="For a bit more adrenaline, rent an ATV through our partners.">Za malo više adrenalina, iznajmite kvad preko naših partnera.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="winter" id="ponude">
+  <img src="/demo/villa-monteverde/photos/view.jpg" alt="" style="object-position:50% 70%">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker" data-en="Goč all year round">Goč tokom cele godine</span>
+      <h2 class="serif"><span data-en="Your escape,">Vaš beg iz grada,</span> <em data-en="in every season">u svako doba godine</em></h2>
+      <p class="lead" style="color:rgba(255,255,255,.72)" data-en="Weekends for two, family holidays and celebrations. Book directly and get the best price.">Vikend u dvoje, porodični odmor ili proslava. Rezervišite direktno i dobijate najbolju cenu.</p>
+    </div>
+    <div class="offers">
+      <div class="offer rv"><span class="tag" data-en="For two">Za dvoje</span><h3 data-en="Romantic weekend">Romantični vikend</h3><p data-en="Jacuzzi, fireplace and a bottle of wine waiting for you on arrival.">Đakuzi, kamin i flaša vina koja vas čeka po dolasku.</p><a href="#rezervacija" data-en="Book →">Rezerviši →</a></div>
+      <div class="offer rv"><span class="tag" data-en="Discount">Popust</span><h3>City break</h3><p data-en="3 days / 2 nights midweek at a lower price. The mountain is quietest then.">3 dana / 2 noći radnim danima po nižoj ceni. Tada je planina najmirnija.</p><a href="#rezervacija" data-en="Book →">Rezerviši →</a></div>
+      <div class="offer rv"><span class="tag" data-en="Events">Proslave</span><h3 data-en="Special occasions">Posebne prilike</h3><p data-en="Birthday, proposal or anniversary, with decor arranged by us.">Rođendan, prosidba ili godišnjica, sa dekoracijom koju mi pripremimo.</p><a href="#kontakt" data-en="Send an inquiry →">Pošaljite upit →</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="rezervacija">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker" data-en="Direct booking">Direktna rezervacija</span>
+      <h2 class="serif"><span data-en="Book directly,">Rezervišite direktno,</span> <em data-en="no middlemen">bez posrednika</em></h2>
+      <p class="lead" data-en="Pick your dates and see the price instantly. The calendar syncs with Booking and Airbnb, so there are never double bookings.">Izaberite datume i odmah vidite cenu. Kalendar se usklađuje sa Bookingom i Airbnb-om, pa nikad nema duplih rezervacija.</p>
+    </div>
+    <div class="book">
+      <div class="cal rv">
+        <div class="cal-h">
+          <h3 data-en="Availability">Slobodni termini</h3>
+          <span class="pill" data-en="Whole villa · up to 6 guests">Cela vila · do 6 osoba</span>
+        </div>
+        <div id="calS"></div>
+        <div class="cal-leg">
+          <span><i style="background:var(--ink)"></i><span data-en="Your stay">Vaš boravak</span></span>
+          <span><i style="background:var(--cream)"></i><span data-en="Nights">Noćenja</span></span>
+          <span><i style="border:1px solid #d8d2c6"></i><span data-en="Booked">Zauzeto</span></span>
+        </div>
+      </div>
+      <aside class="sum rv">
+        <div class="ph"><img src="/demo/villa-monteverde/photos/sunset.jpg" alt="" style="object-position:50% 60%"></div>
+        <h3 data-en="Villa Monteverde">Villa Monteverde</h3>
+        <p class="sub" id="sumSub"></p>
+        <div id="sumBody"></div>
+        <a class="btn" href="#kontakt"><span data-en="Request booking">Pošalji upit</span> <span class="arr">→</span></a>
+      </aside>
+    </div>
+    <p class="kids" data-en="Weeknights €140, Friday and Saturday €170. Minimum stay 2 nights.">Radnim danima €140, petak i subota €170 po noći. Minimalan boravak 2 noći.</p>
+  </div>
+</section>
+
+<section id="kontakt" style="padding-top:0">
+  <div class="wrap">
+    <div class="rv">
+      <span class="kicker" data-en="Contact">Kontakt</span>
+      <h2 class="serif"><span data-en="See you on">Vidimo se na</span> <em data-en="Goč">Goču</em></h2>
+    </div>
+    <div class="contact">
+      <div class="cimg rv"><img src="/demo/villa-monteverde/photos/terrace.jpg" alt="" style="object-position:50% 55%"></div>
+      <div class="clist rv">
+        <a class="cl" href="tel:+381641490055"><div><span data-en="Phone">Telefon</span><b>+381 64 149 0055</b></div><i class="go">→</i></a>
+        <a class="cl" href="https://www.instagram.com/villa.monteverde/"><div><span>Instagram</span><b>@villa.monteverde</b></div><i class="go">→</i></a>
+        <a class="cl" href="https://www.google.com/maps/search/?api=1&query=Villa+Monteverde+Go%C4%8D+Stani%C5%A1inci"><div><span data-en="Location">Lokacija</span><b data-en="Maline, Stanišinci · Goč, Serbia">Maline, Stanišinci · Goč, Srbija</b></div><i class="go">→</i></a>
+        <div class="map"><iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Stani%C5%A1inci%2C%20Serbia&z=12&output=embed" title="Mapa"></iframe></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="big">Villa <em>Monteverde</em></div>
+    <div class="bot"><span data-en="Where moments become memories.">Gde trenuci postaju uspomene.</span><a href="https://lunadigital.pro" target="_blank" rel="noopener" style="color:inherit" data-en="Demo website by Luna Digital · lunadigital.pro">Demo sajt izradila Luna Digital · lunadigital.pro</a></div>
+  </div>
+</footer>
+
+<a class="demo" href="https://lunadigital.pro" target="_blank" rel="noopener" data-en="Demo · Luna Digital">Demo · Luna Digital</a>
+
+<script>
+(function(){
+var L='sr';
+var DAY=864e5;
+function D(y,m,d){return new Date(y,m,d)}
+function key(d){return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()}
+var now=new Date();var today=D(now.getFullYear(),now.getMonth(),now.getDate());
+
+// default stay: 11–13 Dec 2026 (Fri–Sun), or two weeks from today if that has passed
+var A=D(2026,11,11),B=D(2026,11,13);
+if(A<=today){A=new Date(today.getTime()+14*DAY);B=new Date(A.getTime()+2*DAY)}
+var S={a:A,b:B,ad:2,ch:0};
+var MAX=6,PW=140,PE=170,SEED=11;
+function price(d){var w=d.getDay();return (w===5||w===6)?PE:PW}
+
+// deterministic "booked" days, keeping the default stay free
+function booked(d){
+  if(d<today)return true;
+  var k=key(d);if(k>=key(A)&&k<key(B))return false;
+  var x=Math.sin(k*SEED)*10000;x=x-Math.floor(x);
+  var wknd=d.getDay()===5||d.getDay()===6;
+  return x<(wknd?.42:.18);
+}
+var TX={
+  sr:{wk:['Pon','Uto','Sre','Čet','Pet','Sub','Ned'],loc:'sr-Latn-RS',
+      nights:function(n){return n+(n===1?' noć':n<5?' noći':' noćenja')},
+      ad:function(n){return n+(n===1?' odrasla osoba':n<5?' odrasle':' odraslih')},
+      ch:function(n){return n+(n===1?' dete':' dece')},
+      pick:'Izaberite datume',pickA:'Izaberite dan dolaska',pickB:'Izaberite dan odlaska',add:'Dodaj datum',
+      wd:'radni dan',we:'vikend',extras:'Đakuzi, bicikli, parking',incl:'uključeno',comm:'Provizija platforme',tot:'Ukupno',
+      save:function(v){return 'Preko Bookinga ili Airbnb-a bi oko €'+v+' otišlo na proviziju. Ovde ceo iznos ostaje vama.'},
+      empty:'Izaberite datume dolaska i odlaska da vidite cenu.',over:function(m){return 'Vila prima najviše '+m+' osoba.'}},
+  en:{wk:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],loc:'en-GB',
+      nights:function(n){return n+(n===1?' night':' nights')},
+      ad:function(n){return n+(n===1?' adult':' adults')},
+      ch:function(n){return n+(n===1?' child':' children')},
+      pick:'Select dates',pickA:'Select check-in date',pickB:'Select check-out date',add:'Add date',
+      wd:'weeknight',we:'weekend',extras:'Jacuzzi, bikes, parking',incl:'included',comm:'Platform commission',tot:'Total',
+      save:function(v){return 'Through Booking or Airbnb, about €'+v+' would go to commission. Here the full amount stays with you.'},
+      empty:'Choose check-in and check-out dates to see the price.',over:function(m){return 'The villa takes up to '+m+' guests.'}}
+};
+function T(){return TX[L]}
+function fmt(d,o){return d?d.toLocaleDateString(T().loc,o||{weekday:'short',day:'numeric',month:'short'}):T().add}
+function nights(){return S.a&&S.b?Math.round((S.b-S.a)/DAY):0}
+
+// ---------- calendar component ----------
+function Cal(el,count){
+  this.el=el;this.count=count;
+  var base=S.a||today;this.view=D(base.getFullYear(),base.getMonth(),1);
+  var self=this;
+  el.addEventListener('click',function(e){
+    var nb=e.target.closest('[data-nav]');
+    if(nb){self.view=D(self.view.getFullYear(),self.view.getMonth()+(+nb.dataset.nav),1);self.render();return}
+    var c=e.target.closest('.n[data-k]');if(!c)return;
+    var p=c.dataset.k.split('-');pick(D(+p[0],+p[1],+p[2]));
+  });
+}
+Cal.prototype.render=function(){
+  var t=T(),h='',minView=D(today.getFullYear(),today.getMonth(),1);
+  h+='<div class="cal-top"><button class="nav-b" data-nav="-1" '+(this.view<=minView?'disabled':'')+' aria-label="prev">‹</button><button class="nav-b" data-nav="1" aria-label="next">›</button></div><div class="months">';
+  for(var i=0;i<this.count;i++){
+    var m=D(this.view.getFullYear(),this.view.getMonth()+i,1);
+    h+='<div class="mo"><h4>'+m.toLocaleDateString(t.loc,{month:'long',year:'numeric'})+'</h4><div class="wk">'+t.wk.map(function(w){return '<div>'+w+'</div>'}).join('')+'</div><div class="days">';
+    var lead=(m.getDay()+6)%7;for(var j=0;j<lead;j++)h+='<div class="day e"></div>';
+    var dim=D(m.getFullYear(),m.getMonth()+1,0).getDate();
+    for(var d=1;d<=dim;d++){
+      var dt=D(m.getFullYear(),m.getMonth(),d),k=key(dt),cls='day';
+      var off=booked(dt);
+      var isA=S.a&&k===key(S.a),isB=S.b&&k===key(S.b);
+      if(isA){cls+=' a';if(S.b)cls+=' has-b'}
+      else if(isB)cls+=' b';
+      else if(S.a&&S.b&&dt>S.a&&dt<S.b)cls+=' in';
+      if(off&&!isA&&!isB)cls+=' off';
+      h+='<div class="'+cls+'"><div class="n"'+(off&&!isB?'':' data-k="'+dt.getFullYear()+'-'+dt.getMonth()+'-'+d+'"')+'><b>'+d+'</b><small>€'+price(dt)+'</small></div></div>';
+    }
+    h+='</div></div>';
+  }
+  this.el.innerHTML=h+'</div>';
+};
+var calS=new Cal(document.getElementById('calS'),2);
+var calM=new Cal(document.getElementById('calM'),2);
+
+function rangeFree(a,b){for(var t=a.getTime();t<b.getTime();t+=DAY){if(booked(new Date(t)))return false}return true}
+function pick(d){
+  if(!S.a||S.b||d<=S.a){S.a=d;S.b=null}
+  else if(rangeFree(S.a,d)){S.b=d}
+  else{S.a=d;S.b=null}
+  all();
+}
+
+// ---------- guests ----------
+var gpop=document.getElementById('gpop'),gBtn=document.getElementById('gBtn');
+gBtn.addEventListener('click',function(e){e.stopPropagation();gpop.classList.toggle('on');gBtn.classList.toggle('act')});
+gpop.addEventListener('click',function(e){
+  e.stopPropagation();
+  var b=e.target.closest('[data-k]');if(!b||b.disabled)return;
+  var k=b.dataset.k,s=+b.dataset.s;
+  if(k==='ad')S.ad=Math.min(MAX,Math.max(1,S.ad+s));else S.ch=Math.min(4,Math.max(0,S.ch+s));
+  all();
+});
+document.getElementById('gDone').addEventListener('click',function(){gpop.classList.remove('on');gBtn.classList.remove('act')});
+document.addEventListener('click',function(){gpop.classList.remove('on');gBtn.classList.remove('act')});
+
+// ---------- date modal ----------
+var modal=document.getElementById('dModal');
+document.querySelectorAll('[data-open="dates"]').forEach(function(b){b.addEventListener('click',function(e){
+  e.stopPropagation();calM.view=D((S.a||today).getFullYear(),(S.a||today).getMonth(),1);modal.classList.add('on');all();
+})});
+modal.addEventListener('click',function(e){if(e.target===modal||e.target.closest('[data-close]'))modal.classList.remove('on')});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){modal.classList.remove('on');gpop.classList.remove('on')}});
+document.getElementById('dClear').addEventListener('click',function(){S.a=null;S.b=null;all()});
+
+// ---------- render everything ----------
+function all(){
+  var t=T(),n=nights();
+  document.getElementById('hA').textContent=fmt(S.a);
+  document.getElementById('hB').textContent=fmt(S.b);
+  document.getElementById('hG').textContent=t.ad(S.ad)+(S.ch?', '+t.ch(S.ch):'');
+  document.getElementById('oAd').textContent=S.ad;document.getElementById('oCh').textContent=S.ch;
+  gpop.querySelectorAll('[data-k]').forEach(function(b){
+    var v=b.dataset.k==='ad'?S.ad:S.ch,s=+b.dataset.s;
+    b.disabled=b.dataset.k==='ad'?(s<0?v<=1:S.ad+S.ch>=MAX):(s<0?v<=0:S.ad+S.ch>=MAX);
+  });
+  document.getElementById('dTitle').textContent=n?t.nights(n):(S.a?t.pickB:t.pickA);
+  document.getElementById('dSub').textContent=S.a?fmt(S.a,{day:'numeric',month:'long'})+(S.b?' → '+fmt(S.b,{day:'numeric',month:'long',year:'numeric'}):''):t.pick;
+  calS.render();if(modal.classList.contains('on'))calM.render();
+  var guests=t.ad(S.ad)+(S.ch?', '+t.ch(S.ch):'');
+  document.getElementById('sumSub').textContent=(n?fmt(S.a,{day:'numeric',month:'short'})+' – '+fmt(S.b,{day:'numeric',month:'short'})+' · '+t.nights(n)+' · ':'')+guests;
+  var body='';
+  if(S.ad+S.ch>MAX)body+='<p class="save" style="margin:0 0 10px;background:rgba(242,199,156,.1);border-color:rgba(242,199,156,.3);color:var(--gold2)">'+t.over(MAX)+'</p>';
+  if(n){var nw=0,ne=0;
+    for(var x=S.a.getTime();x<S.b.getTime();x+=DAY){if(price(new Date(x))===PE)ne++;else nw++}
+    var tot=nw*PW+ne*PE;
+    if(nw)body+='<div class="ln"><span>'+nw+' × €'+PW+' <small style="opacity:.6">('+t.wd+')</small></span><b>€'+nw*PW+'</b></div>';
+    if(ne)body+='<div class="ln"><span>'+ne+' × €'+PE+' <small style="opacity:.6">('+t.we+')</small></span><b>€'+ne*PE+'</b></div>';
+    body+='<div class="ln"><span>'+t.extras+'</span><b>'+t.incl+'</b></div>'+
+      '<div class="ln z"><span>'+t.comm+'</span><b>€0</b></div>'+
+      '<div class="ln t"><span>'+t.tot+'</span><b>€'+tot+'</b></div>'+
+      '<div class="save">'+t.save(Math.round(tot*.15))+'</div>';
+  }else body+='<p class="empty">'+t.empty+'</p>';
+  document.getElementById('sumBody').innerHTML=body;
+}
+
+// ---------- language ----------
+document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){
+  L=b.dataset.l;document.documentElement.lang=L;
+  document.querySelectorAll('.lang button').forEach(function(x){x.classList.toggle('on',x===b)});
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    if(el.dataset.sr===undefined)el.dataset.sr=el.textContent;
+    el.textContent=L==='en'?el.dataset.en:el.dataset.sr;
+  });all();
+})});
+
+// ---------- nav + reveal ----------
+var nav=document.getElementById('nav');addEventListener('scroll',function(){nav.classList.toggle('solid',scrollY>80)});
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+}else document.querySelectorAll('.rv').forEach(function(el){el.classList.add('on')});
+
+all();
+})();
+</script>
+</body>
+</html>
