@@ -4,19 +4,19 @@
    Rental website planner: 5 steps on the left, live preview on the right.
    On phones, tablets and short screens the preview fills the screen and the
    steps sit in a bottom sheet; after the last choice it slides down once to
-   show the website, then goes on to the price.
+   show the website, then goes on to the price request.
    Each step has its own URL (/builder, /builder/style, …) so the browser's
    back button works and Vercel Analytics shows where visitors drop off.
    ========================================================== */
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { LogoMark } from "@/components/Logo";
 import { useToast } from "@/components/Toast";
 import { track } from "@/lib/analytics";
-import { CONTACT_EMAIL, EMAIL_RE, money, openMailClient, prefersReducedMotion, sendToServer } from "@/lib/site";
+import { CONTACT_EMAIL, EMAIL_RE, openMailClient, prefersReducedMotion, sendToServer } from "@/lib/site";
 import { EXTRAS, FEATURES, ICON, PACE, STEPS, STYLES, TYPES, type Extra, type Feature, type PaceId, type PlaceType, type StyleId } from "./data";
-import { DEFAULT_PLAN, estimate, loadPlan, placeLoc, placeName, r10, savePlan, slug, toggleFeature, type Plan } from "./plan";
+import { DEFAULT_PLAN, buildTime, loadPlan, placeLoc, placeName, savePlan, slug, toggleFeature, type Plan } from "./plan";
 import { Preview, type PreviewHandle } from "./Preview";
 
 const LAST = STEPS.length - 1;
@@ -51,7 +51,6 @@ export function Planner() {
   const [peek, setPeek] = useState(false);
 
   const setPlan = (patch: Partial<Plan>) => setPlanState((p) => ({ ...p, ...patch }));
-  const est = useMemo(() => estimate(plan), [plan]);
 
   // Load the saved plan (browser only), and continue where the visitor left off
   useEffect(() => {
@@ -110,7 +109,7 @@ export function Planner() {
     if (x.id === "domain" && on) toast(`We'll set up ${slug(plan)}.com (if it's free)`);
   }
 
-  const totalText = est.low === est.high ? money.format(est.low) : `${money.format(est.low)}–${money.format(est.high)}`;
+  const sectionCount = plan.features.length + 1; // + home page
 
   return (
     <div className="bp">
@@ -172,7 +171,7 @@ export function Planner() {
               </label>
             </Step>
 
-            <Step i={1} current={step} title="Choose a style" sub="Let us design a style that fits your place, or bring your own idea and we'll design it together on a call (+€100).">
+            <Step i={1} current={step} title="Choose a style" sub="Let us design a style that fits your place, or bring your own idea and we'll design it together on a call.">
               <div className="bp-cards bp-styles">
                 {(Object.keys(STYLES) as StyleId[]).map((id) => (
                   <label className={`bp-card${id === "custom" ? " bp-card--custom" : ""}`} key={id}>
@@ -206,7 +205,6 @@ export function Planner() {
               <div className="bp-included">
                 <span className="bp-ico" aria-hidden="true"><svg viewBox="0 0 24 24">{ICON.home}</svg></span>
                 <div><b>Home page</b><small>Big photo, your story, amenities, map and contact details. Always included.</small></div>
-                <span className="bp-price">€250</span>
               </div>
               <div className="bp-toggles">
                 {FEATURES.map((f) => <Toggle key={f.id} item={f} checked={plan.features.includes(f.id)} onChange={(on) => setFeature(f, on)} />)}
@@ -227,15 +225,15 @@ export function Planner() {
               </fieldset>
             </Step>
 
-            <SendStep plan={plan} current={step} />
+            <SendStep plan={plan} current={step} setPlan={setPlan} />
           </div>
 
-          {/* sticky footer: price + navigation */}
+          {/* sticky footer: summary + navigation */}
           <div className="bp-foot">
             <div className="bp-total" aria-live="polite">
               <span>Your website</span>
-              <b key={totalText} className={loaded ? "bump" : undefined}>{totalText}</b>
-              <small>about {est.weeksText}{est.monthly ? ` · +€${est.monthly}/month` : ""}</small>
+              <b key={sectionCount} className={loaded ? "bump" : undefined}>{sectionCount} section{sectionCount === 1 ? "" : "s"}</b>
+              <small>about {buildTime(plan)}</small>
             </div>
             <div className="bp-nav">
               {/* Wide screens: Back / Next. Bottom sheet: choose → see the result → next. */}
@@ -244,14 +242,14 @@ export function Planner() {
                 {step === LAST - 1 ? "See my plan →" : "Next →"}
               </button>
               {/* Bottom sheet: Next through the choices; after the last choice (Extras)
-                  the sheet slides down once to show the website, then on to the price. */}
+                  the sheet slides down once to show the website, then on to the request. */}
               <button type="button" className="btn btn--primary nav-sheet" hidden={step === LAST}
                 onClick={() => (step === LAST - 1 ? showResult() : goTo(step + 1))}>
                 {step === LAST - 1 ? <><EyeIcon /> See my website</> : "Next →"}
               </button>
               <button type="button" className="btn btn--ghost nav-peek" onClick={editChoices}>Edit</button>
               <button type="button" className="btn btn--primary nav-peek" onClick={() => (step === LAST ? editChoices() : goTo(step + 1))}>
-                {step === LAST ? "Send my plan →" : step === LAST - 1 ? "See my price →" : "Next →"}
+                {step === LAST ? "Request my price →" : step === LAST - 1 ? "Request my price →" : "Next →"}
               </button>
             </div>
           </div>
@@ -299,14 +297,13 @@ function Step({ i, current, title, sub, children }: { i: number; current: number
 
 function Toggle({ item, checked, onChange }: { item: Feature | Extra; checked: boolean; onChange: (on: boolean) => void }) {
   const tag = "tag" in item ? item.tag : undefined;
-  const monthly = "monthly" in item ? item.monthly : undefined;
   return (
     <label className="bp-toggle">
       <input type="checkbox" value={item.id} checked={checked} onChange={(e) => onChange(e.target.checked)} />
       <span className="bp-toggle__body">
         <span className="bp-ico" aria-hidden="true"><svg viewBox="0 0 24 24">{ICON[item.id]}</svg></span>
         <span><b>{item.name}{tag && <span className="bp-tag">{tag}</span>}</b><small>{item.desc}</small></span>
-        <span className="bp-price">{monthly ? `€${monthly}/mo` : `+€${item.price}`}<span className="bp-switch" aria-hidden="true"></span></span>
+        <span className="bp-price"><span className="bp-switch" aria-hidden="true"></span></span>
       </span>
     </label>
   );
@@ -333,13 +330,15 @@ function StyleThumb({ id }: { id: StyleId }) {
   );
 }
 
-/* ---------------- Step 5: summary + send ---------------- */
-function SendStep({ plan, current }: { plan: Plan; current: number }) {
+/* ---------------- Step 5: summary + price request ---------------- */
+function SendStep({ plan, current, setPlan }: { plan: Plan; current: number; setPlan: (patch: Partial<Plan>) => void }) {
   const toast = useToast();
   const router = useRouter();
-  const est = estimate(plan);
+  const weeksText = buildTime(plan);
+  const sections = ["Home page (incl. amenities & map)", ...FEATURES.filter((f) => plan.features.includes(f.id)).map((f) => f.name)];
+  const extras = EXTRAS.filter((x) => plan.extras.includes(x.id)).map((x) => x.name);
   const t = TYPES[plan.type];
-  const [form, setForm] = useState({ name: "", email: "", phone: "", notes: "", founding: true, _gotcha: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", founding: true, _gotcha: "" });
   const [bad, setBad] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<{ name: string; mail?: { subject: string; body: string } } | null>(null);
@@ -354,45 +353,45 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
 
     const custom = plan.style === "custom";
     const message = [
-      "Rental website plan (from the Luna planner)",
+      "Price request (from the Luna planner)",
       "",
       `Place: ${placeName(plan)} (${t.label}), ${placeLoc(plan)}, €${plan.price}/${t.unit}`,
       `Style: ${STYLES[plan.style].label}${plan.style === "luna" ? " (Luna designs it)" : " (book a design call)"}`,
       custom && plan.customNote.trim() ? `Their design idea: ${plan.customNote.trim()}` : "",
       custom && plan.customLinks.trim() ? `Websites they like: ${plan.customLinks.trim()}` : "",
-      `Sections: Home page (incl. amenities & map)${plan.features.length ? ", " + FEATURES.filter((f) => plan.features.includes(f.id)).map((f) => f.name).join(", ") : ""}`,
-      `Extras: ${EXTRAS.filter((x) => plan.extras.includes(x.id)).map((x) => x.name).join(", ") || "none"}`,
-      `Timing: ${PACE[plan.pace].label}, ${est.weeksText}`,
-      `Estimate: ${money.format(est.low)} – ${money.format(est.high)}${est.monthly ? ` + €${est.monthly}/month` : ""}`,
-      form.founding ? `Founding client price: ${money.format(r10(est.low * 0.8))} – ${money.format(r10(est.high * 0.8))}` : "",
+      `Sections: ${sections.join(", ")}`,
+      `Extras: ${extras.join(", ") || "none"}`,
+      `Timing: ${PACE[plan.pace].label}, ${weeksText}`,
       form.phone ? `Phone / WhatsApp: ${form.phone}` : "",
-      form.notes ? `\nNotes: ${form.notes}` : "",
+      plan.wish.trim() ? `\nTheir wish:\n${plan.wish.trim()}` : "",
     ].filter((l) => l !== "").join("\n");
 
     setLoading(true);
     const firstName = form.name.trim().split(" ")[0];
     const sent = await sendToServer({
       name: form.name.trim(), email: form.email.trim(), company: placeName(plan),
-      budget: `${money.format(est.low)}–${money.format(est.high)}`, message,
+      message,
+      // The server adds our price estimate to the email we receive
+      plan: JSON.stringify({ style: plan.style, features: plan.features, extras: plan.extras, pace: plan.pace }),
       ...(form.founding ? { founding: "Yes" } : {}),
     });
     setLoading(false);
     if (!sent) {
       // Server unavailable: the visitor still has to press Send in their own email app,
-      // so don't claim the plan was sent yet.
+      // so don't claim the request was sent yet.
       const mail = {
-        subject: `${form.founding ? "[Founding client] " : ""}Website plan: ${placeName(plan)}`,
+        subject: `${form.founding ? "[Founding client] " : ""}Price request: ${placeName(plan)}`,
         body: `Name: ${form.name}\nEmail: ${form.email}\n\n${message}`,
       };
       openMailClient(mail.subject, mail.body);
       toast("Opening your email app to finish sending…");
       setDone({ name: firstName, mail });
-      track("Plan email opened", { type: plan.type, style: plan.style, sections: plan.features.length, estimate: est.low });
+      track("Plan email opened", { type: plan.type, style: plan.style, sections: plan.features.length });
       return;
     }
     setDone({ name: firstName });
     router.replace("/builder/sent", { scroll: false }); // recorded as its own page in analytics
-    track("Plan sent", { type: plan.type, style: plan.style, sections: plan.features.length, estimate: est.low });
+    track("Plan sent", { type: plan.type, style: plan.style, sections: plan.features.length });
   }
 
   const inputClass = (n: string) => `bp-input${bad.includes(n) ? " is-invalid" : ""}`;
@@ -400,10 +399,10 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
   return (
     <div className="bp-step" data-step={LAST} hidden={current !== LAST}>
       <p className="eyebrow">Step {STEPS.length} of {STEPS.length}</p>
-      <h1 tabIndex={-1}>Your website plan</h1>
+      <h1 tabIndex={-1}>Request your price</h1>
       {done === null ? (
         <>
-          <p className="bp-sub">Here&apos;s everything you picked. Send it and we&apos;ll reply within one business day, free and with no obligation.</p>
+          <p className="bp-sub">Check your choices and tell us your wish. We&apos;ll email you the price, an invoice and all the information within one business day. Asking is free, with no obligation.</p>
           <div className="bp-summary">
             <div className="bp-summary__row bp-summary__row--head"><span>{placeName(plan)}</span><span>{t.label}</span></div>
             <div className="bp-summary__row"><span>Location</span><span>{placeLoc(plan)}</span></div>
@@ -412,17 +411,15 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
               <div className="bp-summary__row"><span>Your idea</span>
                 <span className="bp-summary__note">{plan.customNote.trim().slice(0, 120)}{plan.customNote.trim().length > 120 ? "…" : ""}</span></div>
             )}
-            {est.lines.map(([n, p]) => <div className="bp-summary__row" key={n}><span>{n}</span><span>€{p}</span></div>)}
-            {est.monthlyLines.map(([n, p]) => <div className="bp-summary__row" key={n}><span>{n}</span><span>€{p}/month</span></div>)}
-            <div className="bp-summary__row"><span>Timing</span><span>{PACE[plan.pace].label} · {est.weeksText}</span></div>
-            <div className="bp-summary__total">
-              <span className="big">{money.format(est.low)} – {money.format(est.high)}</span>
-              <div className="founding"><span>Founding client price (−20%)</span><b>{money.format(r10(est.low * 0.8))} – {money.format(r10(est.high * 0.8))}</b></div>
-              <small>Final fixed price agreed after a free call. Includes design, building, testing, launch and 30 days of free help.</small>
-            </div>
+            <div className="bp-summary__row"><span>Sections</span><span className="bp-summary__note">{sections.join(", ")}</span></div>
+            {extras.length > 0 && <div className="bp-summary__row"><span>Extras</span><span className="bp-summary__note">{extras.join(", ")}</span></div>}
+            <div className="bp-summary__row"><span>Timing</span><span>{PACE[plan.pace].label} · {weeksText}</span></div>
           </div>
 
           <form className="bp-form" id="planForm" noValidate onSubmit={onSubmit}>
+            <label className="bp-input"><span>Describe your wish <small>(optional)</small></span>
+              <textarea name="wish" rows={5} maxLength={1500} placeholder="Tell us in your own words what you'd like: how the website should feel, what guests should be able to do, when you need it…"
+                value={plan.wish} onChange={(e) => setPlan({ wish: e.target.value })} /></label>
             <div className="bp-grid2">
               <label className={inputClass("name")}><span>Your name</span>
                 <input type="text" name="name" autoComplete="name" required value={form.name} onChange={(e) => set({ name: e.target.value })} /></label>
@@ -431,18 +428,16 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
             </div>
             <label className="bp-input"><span>Phone or WhatsApp <small>(optional)</small></span>
               <input type="tel" name="phone" autoComplete="tel" value={form.phone} onChange={(e) => set({ phone: e.target.value })} /></label>
-            <label className="bp-input"><span>Anything else? <small>(optional)</small></span>
-              <textarea name="notes" rows={3} placeholder="e.g. I already have photos, I need it before the summer season…" value={form.notes} onChange={(e) => set({ notes: e.target.value })} /></label>
             <label className="check">
               <input type="checkbox" name="founding" checked={form.founding} onChange={(e) => set({ founding: e.target.checked })} />
               <span>Apply my founding client discount (20% off, in exchange for an honest review)</span>
             </label>
             <input type="text" name="_gotcha" className="hp" tabIndex={-1} autoComplete="off" aria-hidden="true" value={form._gotcha} onChange={(e) => set({ _gotcha: e.target.value })} />
             {bad.length > 0 && (
-              <p className="bp-error" role="alert">{bad.includes("name") ? "Please tell us your name." : "Please enter a valid email so we can reply."}</p>
+              <p className="bp-error" role="alert">{bad.includes("name") ? "Please tell us your name." : "Please enter a valid email so we can send you the price."}</p>
             )}
             <button className={`btn btn--primary btn--block${loading ? " is-loading" : ""}`} type="submit" disabled={loading}>
-              <span className="btn__label">Send my plan</span><span className="spinner" aria-hidden="true"></span>
+              <span className="btn__label">Request price</span><span className="spinner" aria-hidden="true"></span>
             </button>
           </form>
         </>
@@ -454,14 +449,14 @@ function SendStep({ plan, current }: { plan: Plan; current: number }) {
           {done.mail ? (
             <>
               <h2>Almost there, {done.name}!</h2>
-              <p>Your plan is ready in a new email. Press <b>Send</b> in your email app to send it to us. If nothing opened, write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+              <p>Your request is ready in a new email. Press <b>Send</b> in your email app to send it to us. If nothing opened, write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
               <button type="button" className="btn btn--primary" onClick={() => openMailClient(done.mail!.subject, done.mail!.body)}>Open the email again</button>
               <button type="button" className="btn btn--ghost" onClick={() => setDone(null)}>Back to my plan</button>
             </>
           ) : (
             <>
-              <h2>Plan sent!</h2>
-              <p>Thanks, {done.name}. We&apos;ll look at your plan and reply within one business day with a fixed price and next steps.</p>
+              <h2>Request sent!</h2>
+              <p>Thanks, {done.name}. We&apos;ll look at your wishes and email you the price, an invoice and all the information within one business day.</p>
               <Link href="/" className="btn btn--ghost">Back to Luna Digital</Link>
             </>
           )}

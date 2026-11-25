@@ -88,7 +88,7 @@ export function Included() {
 }
 
 export function PlannerPromo() {
-  const steps = ["Your place", "Pick a style", "Choose sections", "Extras", "Send your plan"];
+  const steps = ["Your place", "Pick a style", "Choose sections", "Extras", "Request your price"];
   return (
     <section className="section" id="planner">
       <div className="container">
@@ -96,7 +96,7 @@ export function PlannerPromo() {
           <div className="promo__copy">
             <p className="eyebrow eyebrow--light">Website planner</p>
             <h2>Have a rental? Design your website in <em>2 minutes</em>.</h2>
-            <p className="promo__sub">Pick a style, switch on a gallery, calendar or online booking, and watch your future website build itself. You see the price instantly, with no sign-up.</p>
+            <p className="promo__sub">Pick a style, switch on a gallery, calendar or online booking, and watch your future website build itself. Tell us your wish, request the price, and we&apos;ll email it to you. No sign-up.</p>
             <ol className="promo__steps">{steps.map((s, i) => <li key={s}><b>{i + 1}</b>{s}</li>)}</ol>
             <Link href="/builder" className="btn btn--light btn--lg">Start planning <span aria-hidden="true">→</span></Link>
           </div>
@@ -108,7 +108,7 @@ export function PlannerPromo() {
                 {[["Photo gallery", true], ["Availability calendar", true], ["Online booking", true], ["Guest reviews", false]].map(([label, on]) => (
                   <div key={label as string} className={`pm__toggle${on ? " is-on" : ""}`}><span>{label}</span><i></i></div>
                 ))}
-                <div className="pm__total"><small>Your website</small><b>€440–530</b></div>
+                <div className="pm__total"><small>Your website</small><b>4 sections</b></div>
               </div>
               <div className="pm__preview">
                 <div className="pm__hero"></div>
