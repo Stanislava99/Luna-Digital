@@ -29,10 +29,10 @@ export default function OpengraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ fontSize: 84, lineHeight: 1.05, letterSpacing: -2 }}>
-            Websites that bring you more bookings
+            Booking websites for holiday rentals
           </div>
           <div style={{ fontSize: 30, color: "#55536b", fontFamily: "sans-serif" }}>
-            Online booking · Airbnb &amp; Booking.com calendar sync · from €200
+            Online booking · Airbnb &amp; Booking.com calendar sync
           </div>
         </div>
         <div style={{ fontSize: 28, color: "#4f46e5", fontFamily: "sans-serif", fontWeight: 600 }}>lunadigital.pro</div>

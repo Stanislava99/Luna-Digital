@@ -12,6 +12,8 @@
  * to opening the visitor's own email app, so no message is lost.
  */
 import { NextResponse } from "next/server";
+import { isLocale, LOCALES } from "@/lib/i18n";
+import { estimateText, parseChoices } from "@/lib/planPrices";
 import { EMAIL_RE } from "@/lib/site";
 
 const oneLine = (v: unknown, max: number) => String(v ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, max);
@@ -33,7 +35,9 @@ export async function POST(req: Request) {
   const email = oneLine(body.email, 150);
   const company = oneLine(body.company, 150);
   const budget = oneLine(body.budget, 50);
+  const locale = oneLine(body.locale, 5);
   const founding = Boolean(body.founding);
+  const choices = parseChoices(body.plan); // only sent by the planner
   const message = String(body.message ?? "").trim().slice(0, 5000);
 
   const fields: string[] = [];
@@ -47,15 +51,17 @@ export async function POST(req: Request) {
   if (!apiKey || !to) return NextResponse.json({ ok: false, error: "Email sending not configured" }, { status: 503 });
 
   const text = [
-    "New message from the Luna Digital website",
+    `${choices ? "New price request" : "New message"} from the Luna Digital website`,
     "----------------------------------------",
     `Name:    ${name}`,
     `Email:   ${email}`,
     company ? `Company: ${company}` : null,
+    isLocale(locale) ? `Language: ${LOCALES[locale].name}` : null,
     budget ? `Budget:  ${budget}` : null,
     founding ? "Founding client spot: Yes (20% off)" : null,
     "",
     message,
+    choices ? `\n----------------------------------------\n${estimateText(choices, founding)}` : null,
   ].filter((l) => l !== null).join("\n");
 
   try {
@@ -66,7 +72,7 @@ export async function POST(req: Request) {
         from: process.env.CONTACT_FROM || "Luna Digital <onboarding@resend.dev>",
         to: [to],
         reply_to: email,
-        subject: `${founding ? "[Founding client] " : ""}New enquiry from ${name}${company ? ` (${company})` : ""}`,
+        subject: `${founding ? "[Founding client] " : ""}${choices ? "Price request" : "New enquiry"} from ${name}${company ? ` (${company})` : ""}`,
         text,
       }),
     });

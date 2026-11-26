@@ -1,6 +1,6 @@
-/* Plan state, saving to the browser, and price calculation (pure functions, easy to test). */
+/* Plan state, saving to the browser, and the time estimate (pure functions, easy to test). */
 import {
-  BASE_PRICE, EXTRAS, FEATURES, PACE, STYLES, TYPES,
+  EXTRAS, FEATURES, PACE, STYLES, TYPES,
   type ExtraId, type FeatureId, type FontId, type PaceId, type PlaceType, type StyleId, type ThemeId,
 } from "./data";
 
@@ -14,6 +14,7 @@ export type Plan = {
   font: FontId;
   customNote: string;
   customLinks: string;
+  wish: string;
   features: FeatureId[];
   extras: ExtraId[];
   pace: PaceId;
@@ -23,7 +24,7 @@ export type Plan = {
 
 export const DEFAULT_PLAN: Plan = {
   type: "apartment", name: "", location: "", price: 80, style: "luna", theme: "coastal", font: "classic",
-  customNote: "", customLinks: "", features: ["gallery", "calendar"], extras: [], pace: "standard", device: "desktop", step: 0,
+  customNote: "", customLinks: "", wish: "", features: ["gallery", "calendar"], extras: [], pace: "standard", device: "desktop", step: 0,
 };
 
 const STORAGE_KEY = "luna-plan";
@@ -63,63 +64,38 @@ export function savePlan(plan: Plan) {
 export const hasSection = (plan: Plan, id: FeatureId | "amenities" | "map") =>
   id === "amenities" || id === "map" || plan.features.includes(id);
 
-export const placeName = (p: Plan) => p.name.trim() || TYPES[p.type].name;
-export const placeLoc = (p: Plan) => p.location.trim() || "City centre";
+/* The planner passes its translate function; our own email uses the English names. */
+type Tr = (s: string) => string;
+const same: Tr = (s) => s;
+export const placeName = (p: Plan, t = same) => p.name.trim() || t(TYPES[p.type].name);
+export const placeLoc = (p: Plan, t = same) => p.location.trim() || t("City centre");
 export const slug = (p: Plan) =>
   placeName(p).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "").slice(0, 24) || "yourplace";
 
-export const r10 = (n: number) => Math.round(n / 10) * 10;
-
-export type Estimate = {
-  lines: [string, number][];
-  monthlyLines: [string, number][];
-  low: number;
-  high: number;
-  monthly: number;
-  weeks: number;
-  weeksText: string;
-};
-
-export function estimate(plan: Plan): Estimate {
-  let total = BASE_PRICE, w = 1, monthly = 0;
-  const lines: [string, number][] = [["Home page (incl. amenities, map & contact)", BASE_PRICE]];
-  const monthlyLines: [string, number][] = [];
-
-  const stylePrice = STYLES[plan.style].price;
-  if (stylePrice) { total += stylePrice; w += 0.5; lines.push(["Custom design (call + your own style)", stylePrice]); }
-
-  FEATURES.forEach((f) => {
-    if (plan.features.includes(f.id)) { total += f.price; w += f.w; lines.push([f.name, f.price]); }
-  });
-  EXTRAS.forEach((x) => {
-    if (!plan.extras.includes(x.id)) return;
-    if (x.monthly) { monthly += x.monthly; monthlyLines.push([x.name, x.monthly]); return; }
-    total += x.price ?? 0; w += x.w; lines.push([x.name, x.price ?? 0]);
-  });
-
-  const pace = PACE[plan.pace];
-  const weeks = Math.max(1, Math.round(w * pace.wmult));
-  return {
-    lines, monthlyLines, monthly, weeks,
-    low: r10(total * pace.mult),
-    high: r10(total * pace.mult * 1.2),
-    weeksText: `${weeks}–${weeks + 1} weeks`,
-  };
+/** How long the build takes, in weeks ("2–3"). Prices live on the server only (lib/planPrices.ts). */
+export function buildWeeks(plan: Plan): string {
+  let w = 1;
+  if (plan.style === "custom") w += 0.5;
+  FEATURES.forEach((f) => { if (plan.features.includes(f.id)) w += f.w; });
+  EXTRAS.forEach((x) => { if (plan.extras.includes(x.id)) w += x.w; });
+  const weeks = Math.max(1, Math.round(w * PACE[plan.pace].wmult));
+  return `${weeks}–${weeks + 1}`;
 }
+export const buildTime = (plan: Plan) => `${buildWeeks(plan)} weeks`;
 
 /** Turns features on/off, keeping dependencies (booking & sync need the calendar) consistent. */
-export function toggleFeature(features: FeatureId[], id: FeatureId, on: boolean): { features: FeatureId[]; note?: string } {
+export function toggleFeature(features: FeatureId[], id: FeatureId, on: boolean): { features: FeatureId[]; note?: { text: string; name: string } } {
   const f = FEATURES.find((x) => x.id === id)!;
   let next = new Set(features);
-  let note: string | undefined;
+  let note: { text: string; name: string } | undefined;
   if (on) {
     next.add(id);
-    if (f.needs && !next.has(f.needs)) { next.add(f.needs); note = `Added the calendar too: ${f.name.toLowerCase()} needs it`; }
+    if (f.needs && !next.has(f.needs)) { next.add(f.needs); note = { text: "Added the calendar too. It's needed for: {name}", name: f.name }; }
   } else {
     next.delete(id);
     FEATURES.filter((x) => x.needs === id && next.has(x.id)).forEach((dep) => {
       next.delete(dep.id);
-      note = `Removed ${dep.name.toLowerCase()}: it needs the calendar`;
+      note = { text: "Removed, because it needs the calendar: {name}", name: dep.name };
     });
   }
   next = new Set(FEATURES.map((x) => x.id).filter((x) => next.has(x)));

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useI18n } from "@/components/I18n";
+import { Rich } from "@/components/Rich";
 import { FOUNDING } from "@/lib/site";
 
 const SYNODIC = 29.530588853;
@@ -34,6 +36,7 @@ function phasePath(p: number, cx = 20, cy = 20, r = 16) {
 }
 
 export function MoonBadge() {
+  const { t, locale } = useI18n();
   // Computed after mount so the server and browser render the same HTML
   const [phase, setPhase] = useState<number | null>(null);
   useEffect(() => setPhase(moonPhase()), []);
@@ -46,14 +49,14 @@ export function MoonBadge() {
       <svg
         viewBox="0 0 40 40"
         className="badge__moon"
-        aria-label={phase === null ? undefined : `Tonight: ${phaseName(phase).toLowerCase()}, ${illum}% lit`}
-        aria-hidden={phase === null ? true : undefined}
+        aria-label={phase === null || locale !== "en" ? undefined : `Tonight: ${phaseName(phase).toLowerCase()}, ${illum}% lit`}
+        aria-hidden={phase === null || locale !== "en" ? true : undefined}
       >
         <circle cx="20" cy="20" r="16" className="moon-dark" />
         <path className="moon-lit" d={phase === null ? "" : phasePath(phase)} />
       </svg>
       <span>
-        <b>Only {left} left:</b> founding client spots at 20% off
+        <Rich text={t("<b>Only {left} left:</b> founding client spots at 20% off", { left })} />
       </span>
     </>
   );

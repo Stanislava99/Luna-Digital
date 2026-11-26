@@ -1,5 +1,5 @@
 /* ==========================================================
-   Rental website planner: content, prices and translations
+   Rental website planner: content and translations (prices: lib/planPrices.ts)
    ========================================================== */
 import type { ReactNode } from "react";
 
@@ -7,7 +7,7 @@ export type PlaceType = "apartment" | "villa" | "rooms" | "cabin";
 export type Lang = "en" | "de" | "it";
 export type StyleId = "luna" | "custom";
 export type ThemeId = "coastal" | "lodge" | "midnight";
-export type FontId = "classic" | "elegant" | "modern" | "clean" | "friendly";
+export type FontId = "classic" | "elegant" | "clean";
 export type PaceId = "standard" | "rush";
 export type FeatureId = "gallery" | "calendar" | "booking" | "sync" | "reviews" | "guide" | "languages" | "chat";
 export type ExtraId = "domain" | "copy" | "logo" | "care";
@@ -49,17 +49,15 @@ export const TYPES: Record<PlaceType, PlaceInfo> = {
   },
 };
 
-export const STYLES: Record<StyleId, { label: string; desc: string; price?: number; theme: ThemeId; font: FontId }> = {
-  luna: { label: "Let Luna design it", desc: "We create a style made just for your place. Included in the price.", theme: "coastal", font: "classic" },
-  custom: { label: "Custom", desc: "Your own idea: after you send your plan, we'll have a call to design it together. +€100", price: 100, theme: "coastal", font: "classic" },
+export const STYLES: Record<StyleId, { label: string; desc: string; theme: ThemeId; font: FontId }> = {
+  luna: { label: "Let Luna design it", desc: "We create a style made just for your place. Always included.", theme: "coastal", font: "classic" },
+  custom: { label: "Custom", desc: "Your own idea: after you send your plan, we'll have a call to design it together.", theme: "coastal", font: "classic" },
 };
 
 export const FONTS: Record<FontId, { head: string; body: string; hw: number }> = {
-  classic: { head: '"DM Serif Display", serif', body: '"Inter", sans-serif', hw: 400 },
-  elegant: { head: '"Instrument Serif", serif', body: '"Inter", sans-serif', hw: 400 },
-  modern: { head: '"Space Grotesk", sans-serif', body: '"Inter", sans-serif', hw: 700 },
-  clean: { head: '"Inter Tight", sans-serif', body: '"Inter", sans-serif', hw: 700 },
-  friendly: { head: '"Nunito", sans-serif', body: '"Nunito", sans-serif', hw: 800 },
+  classic: { head: 'var(--f-dm-serif), serif', body: 'var(--f-inter), sans-serif', hw: 400 },
+  elegant: { head: 'var(--f-instrument), serif', body: 'var(--f-inter), sans-serif', hw: 400 },
+  clean: { head: 'var(--f-inter-tight), sans-serif', body: 'var(--f-inter), sans-serif', hw: 700 },
 };
 
 export const THEMES: Record<ThemeId, { vars: Record<"bg" | "surface" | "text" | "muted" | "primary" | "accent" | "radius", string>; tiles: string[] }> = {
@@ -98,31 +96,29 @@ export const ICON: Record<string, ReactNode> = {
   care: <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />,
 };
 
-export type Feature = { id: FeatureId; name: string; desc: string; price: number; w: number; sec: SectionId; needs?: FeatureId; tag?: string };
+export type Feature = { id: FeatureId; name: string; desc: string; w: number; sec: SectionId; needs?: FeatureId; tag?: string };
 export const FEATURES: Feature[] = [
-  { id: "gallery", name: "Photo gallery", desc: "Big, clickable photos of your place", price: 20, w: 0.25, sec: "gallery" },
-  { id: "calendar", name: "Availability calendar", desc: "Guests see free and booked dates", price: 20, w: 0.5, sec: "book" },
-  { id: "booking", name: "Online booking & payments", desc: "Guests book and pay by card on your site, with no platform commission", price: 150, w: 1, sec: "book", needs: "calendar", tag: "Popular" },
-  { id: "sync", name: "Airbnb & Booking.com sync", desc: "Calendars stay in sync, so no double bookings", price: 40, w: 0.5, sec: "book", needs: "calendar" },
-  { id: "reviews", name: "Guest reviews", desc: "Show what your guests say", price: 30, w: 0, sec: "reviews" },
-  { id: "guide", name: "Local guide", desc: "Your favourite beaches, restaurants and tips", price: 15, w: 0.5, sec: "guide" },
-  { id: "languages", name: "More languages", desc: "Your site in English, German and Italian", price: 20, w: 0.5, sec: "top" },
-  { id: "chat", name: "WhatsApp chat button", desc: "Guests message you in one tap", price: 10, w: 0, sec: "chat" },
+  { id: "gallery", name: "Photo gallery", desc: "Big, clickable photos of your place", w: 0.25, sec: "gallery" },
+  { id: "calendar", name: "Availability calendar", desc: "Guests see free and booked dates", w: 0.5, sec: "book" },
+  { id: "booking", name: "Online booking & payments", desc: "Guests book and pay by card on your site, with no platform commission", w: 1, sec: "book", needs: "calendar", tag: "Popular" },
+  { id: "sync", name: "Airbnb & Booking.com sync", desc: "Calendars stay in sync, so no double bookings", w: 0.5, sec: "book", needs: "calendar" },
+  { id: "reviews", name: "Guest reviews", desc: "Show what your guests say", w: 0, sec: "reviews" },
+  { id: "guide", name: "Local guide", desc: "Your favourite beaches, restaurants and tips", w: 0.5, sec: "guide" },
+  { id: "languages", name: "More languages", desc: "Your site in English, German and Italian", w: 0.5, sec: "top" },
+  { id: "chat", name: "WhatsApp chat button", desc: "Guests message you in one tap", w: 0, sec: "chat" },
 ];
 
-export type Extra = { id: ExtraId; name: string; desc: string; price?: number; monthly?: number; w: number };
+export type Extra = { id: ExtraId; name: string; desc: string; w: number };
 export const EXTRAS: Extra[] = [
-  { id: "domain", name: "Domain & hosting", desc: "yourplace.com, set up, secure and kept online", monthly: 10, w: 0 },
-  { id: "copy", name: "We write the texts", desc: "Descriptions written for you, in plain words", price: 50, w: 0.5 },
-  { id: "logo", name: "Logo", desc: "A simple, clean logo for your place", price: 150, w: 1 },
-  { id: "care", name: "Care plan", desc: "Updates, backups and small changes every month", monthly: 20, w: 0 },
+  { id: "domain", name: "Domain & hosting", desc: "yourplace.com, set up, secure and kept online", w: 0 },
+  { id: "copy", name: "We write the texts", desc: "Descriptions written for you, in plain words", w: 0.5 },
+  { id: "logo", name: "Logo", desc: "A simple, clean logo for your place", w: 1 },
+  { id: "care", name: "Care plan", desc: "Updates, backups and small changes every month", w: 0 },
 ];
 
-/** Home page with amenities, map and contact is always included. */
-export const BASE_PRICE = 250;
-export const PACE: Record<PaceId, { mult: number; wmult: number; label: string; short: string }> = {
-  standard: { mult: 1, wmult: 1, label: "Standard", short: "Standard" },
-  rush: { mult: 1.3, wmult: 0.6, label: "Rush (+30%)", short: "Rush +30%" },
+export const PACE: Record<PaceId, { wmult: number; label: string; short: string }> = {
+  standard: { wmult: 1, label: "Standard", short: "Standard" },
+  rush: { wmult: 0.6, label: "Rush", short: "Rush" },
 };
 
 export const T: Record<Lang, Record<string, string>> = {
@@ -137,5 +133,5 @@ export const STEPS = [
   { label: "Style", slug: "style" },
   { label: "Sections", slug: "sections" },
   { label: "Extras", slug: "extras" },
-  { label: "Send", slug: "send" },
+  { label: "Request price", slug: "send" },
 ] as const;
