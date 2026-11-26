@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { useI18n } from "@/components/I18n";
 import { Reveal } from "@/components/Reveal";
+import { Rich } from "@/components/Rich";
 import { useToast } from "@/components/Toast";
 import { track } from "@/lib/analytics";
 import { CONTACT_EMAIL, EMAIL_RE, openMailClient, sendToServer } from "@/lib/site";
@@ -18,6 +20,7 @@ const RULES: Record<Field, (v: string) => boolean> = {
 };
 
 export function ContactSection() {
+  const { t, href, locale } = useI18n();
   const toast = useToast();
   const { form, setForm } = useContact();
   const [invalid, setInvalid] = useState<Partial<Record<Field, boolean>>>({});
@@ -45,7 +48,7 @@ export function ContactSection() {
     setLoading(true);
     try {
       const fields: Record<string, string> = {
-        name: form.name, email: form.email, company: form.company, budget: form.budget, message: form.message,
+        name: form.name, email: form.email, company: form.company, budget: form.budget, message: form.message, locale,
         ...(form.founding ? { founding: "Yes" } : {}),
       };
       const sent = await sendToServer(fields);
@@ -59,14 +62,14 @@ export function ContactSection() {
           (form.founding ? "Founding client spot: Yes\n" : "") +
           `\n${form.message}`;
         openMailClient(subject, body);
-        toast("Opening your email app to finish sending…");
+        toast(t("Opening your email app to finish sending…"));
         await new Promise((r) => setTimeout(r, 600));
       }
       setSentName(form.name.trim().split(" ")[0]);
       track("Contact form sent", { founding: form.founding });
       setForm(EMPTY_FORM);
     } catch {
-      toast(`Something went wrong — please email us at ${CONTACT_EMAIL}`);
+      toast(t("Something went wrong. Please email us at {email}", { email: CONTACT_EMAIL }));
     } finally {
       setLoading(false);
     }
@@ -75,7 +78,7 @@ export function ContactSection() {
   async function copyEmail() {
     try {
       await navigator.clipboard.writeText(CONTACT_EMAIL);
-      toast("Email copied to clipboard");
+      toast(t("Email copied to clipboard"));
     } catch {
       toast(CONTACT_EMAIL);
     }
@@ -87,11 +90,10 @@ export function ContactSection() {
     <section className="section section--tint" id="contact">
       <div className="container contact">
         <Reveal className="contact__info">
-          <p className="eyebrow">Contact</p>
-          <h2>Let&apos;s build something <em>luminous</em></h2>
+          <p className="eyebrow">{t("Contact")}</p>
+          <h2><Rich text={t("Let's build something <em>luminous</em>")} /></h2>
           <p className="section__sub">
-            Tell us a little about your project. We reply within one business day with next steps and a time for a free
-            30-minute call.
+            {t("Tell us a little about your project. We reply within one business day with next steps and a time for a free 30-minute call.")}
           </p>
           <ul className="contact__list">
             <li>
@@ -99,14 +101,14 @@ export function ContactSection() {
                 <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
               </span>
               <span>
-                <small>Email</small>
+                <small>{t("Email")}</small>
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
               </span>
-              <button className="copy" type="button" aria-label="Copy email address" onClick={copyEmail}>Copy</button>
+              <button className="copy" type="button" aria-label={t("Copy email address")} onClick={copyEmail}>{t("Copy")}</button>
             </li>
           </ul>
-          <Link href="/builder" className="planner-link">
-            <span><b>Have a rental?</b> Plan your website in 2 minutes and send it to us.</span>
+          <Link href={href("/builder")} className="planner-link">
+            <span><Rich text={t("<b>Have a rental?</b> Plan your website in 2 minutes and send it to us.")} /></span>
             <span aria-hidden="true">→</span>
           </Link>
         </Reveal>
@@ -114,32 +116,32 @@ export function ContactSection() {
         <Reveal as="form" className="contact__form" id="contactForm" noValidate onSubmit={onSubmit}>
           <div className="field-row">
             <div className={fieldClass("name")}>
-              <label htmlFor="name">Your name</label>
-              <input id="name" name="name" type="text" autoComplete="name" required placeholder="Jane Doe"
+              <label htmlFor="name">{t("Your name")}</label>
+              <input id="name" name="name" type="text" autoComplete="name" required placeholder={t("Jane Doe")}
                 value={form.name} aria-invalid={!!invalid.name}
                 onChange={(e) => set("name", e.target.value)} onBlur={() => check("name")} />
-              <span className="field__error">Please tell us your name.</span>
+              <span className="field__error">{t("Please tell us your name.")}</span>
             </div>
             <div className={fieldClass("email")}>
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{t("Email")}</label>
               <input id="email" name="email" type="email" autoComplete="email" required placeholder="jane@company.com"
                 value={form.email} aria-invalid={!!invalid.email}
                 onChange={(e) => set("email", e.target.value)} onBlur={() => check("email")} />
-              <span className="field__error">Please enter a valid email.</span>
+              <span className="field__error">{t("Please enter a valid email.")}</span>
             </div>
           </div>
           <div className="field">
-            <label htmlFor="company">Business name <small>(optional)</small></label>
-            <input id="company" name="company" type="text" autoComplete="organization" placeholder="e.g. Villa Olive"
+            <label htmlFor="company">{t("Business name")}{" "}<small>{t("(optional)")}</small></label>
+            <input id="company" name="company" type="text" autoComplete="organization" placeholder={t("e.g. Villa Olive")}
               value={form.company} onChange={(e) => set("company", e.target.value)} />
           </div>
           <fieldset className="field">
-            <legend>Budget</legend>
+            <legend>{t("Budget")}</legend>
             <div className="chips">
               {BUDGETS.map((b) => (
                 <label className="chip" key={b}>
                   <input type="radio" name="budget" value={b} checked={form.budget === b} onChange={() => set("budget", b)} />
-                  <span>{b}</span>
+                  <span>{t(b)}</span>
                 </label>
               ))}
             </div>
@@ -147,33 +149,33 @@ export function ContactSection() {
           <label className="check">
             <input type="checkbox" name="founding" id="foundingCheck" checked={form.founding}
               onChange={(e) => set("founding", e.target.checked)} />
-            <span>I&apos;d like one of the 5 founding client spots (20% off, in exchange for an honest review)</span>
+            <span>{t("I'd like one of the 5 founding client spots (20% off, in exchange for an honest review)")}</span>
           </label>
           <div className={fieldClass("message")}>
-            <label htmlFor="message">Project details</label>
+            <label htmlFor="message">{t("Project details")}</label>
             <textarea id="message" name="message" rows={5} required
-              placeholder="What are you building, and what does success look like?"
+              placeholder={t("What are you building, and what does success look like?")}
               value={form.message} aria-invalid={!!invalid.message}
               onChange={(e) => set("message", e.target.value)} onBlur={() => check("message")} />
-            <span className="field__error">A few words about your project, please (min. 10 characters).</span>
+            <span className="field__error">{t("A few words about your project, please (min. 10 characters).")}</span>
           </div>
           <input type="text" name="_gotcha" className="hp" tabIndex={-1} autoComplete="off" aria-hidden="true"
             value={form._gotcha} onChange={(e) => set("_gotcha", e.target.value)} />
           <button className={`btn btn--primary btn--block btn--lg${loading ? " is-loading" : ""}`} type="submit" disabled={loading}>
-            <span className="btn__label">Send message</span>
+            <span className="btn__label">{t("Send message")}</span>
             <span className="spinner" aria-hidden="true"></span>
           </button>
-          <p className="form__note">By sending, you agree we may contact you about your enquiry. No spam, ever.</p>
+          <p className="form__note">{t("By sending, you agree we may contact you about your enquiry. No spam, ever.")}{" "}<Link href={href("/privacy")}>{t("Privacy")}</Link></p>
 
           <div className="form__success" role="status" hidden={sentName === null}>
             <div className="success__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5 10 17l9-10" /></svg>
             </div>
-            <h3>Message received!</h3>
-            <p>Thanks, {sentName || "friend"}. We&apos;ll get back to you within one business day.</p>
+            <h3>{t("Message received!")}</h3>
+            <p>{t("Thanks, {name}. We'll get back to you within one business day.", { name: sentName ?? "" })}</p>
             <button className="btn btn--ghost" type="button"
               onClick={() => { setSentName(null); document.getElementById("name")?.focus(); }}>
-              Send another
+              {t("Send another")}
             </button>
           </div>
         </Reveal>

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useI18n } from "@/components/I18n";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { LogoMark } from "@/components/Logo";
 
 const LINKS = [
@@ -12,6 +14,7 @@ const LINKS = [
 ];
 
 export function Nav() {
+  const { t, href } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
@@ -53,11 +56,11 @@ export function Nav() {
       <div className="scroll-progress" aria-hidden="true" style={{ transform: `scaleX(${progress})` }} />
       <header className={`nav${scrolled ? " is-scrolled" : ""}`} id="nav">
         <div className="nav__inner">
-          <a href="#top" className="logo" aria-label="Luna Digital home">
+          <a href="#top" className="logo" aria-label={t("Luna Digital home")}>
             <LogoMark />
             <span>Luna Digital</span>
           </a>
-          <nav className={`nav__links${open ? " is-open" : ""}`} id="navLinks" aria-label="Main">
+          <nav className={`nav__links${open ? " is-open" : ""}`} id="navLinks" aria-label={t("Main")}>
             {LINKS.map((l) => (
               <a
                 key={l.href}
@@ -65,16 +68,17 @@ export function Nav() {
                 className={`${l.className ?? ""}${active === l.href ? " is-active" : ""}`.trim() || undefined}
                 onClick={() => setOpen(false)}
               >
-                {l.label}
+                {t(l.label)}
               </a>
             ))}
-            <Link href="/builder" className="btn btn--sm btn--primary nav__cta" onClick={() => setOpen(false)}>
-              Plan your website
+            <Link href={href("/builder")} className="btn btn--sm btn--primary nav__cta" onClick={() => setOpen(false)}>
+              {t("Plan your website")}
             </Link>
           </nav>
+          <LanguageSwitcher />
           <button
             className="nav__toggle"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={t(open ? "Close menu" : "Open menu")}
             aria-expanded={open}
             aria-controls="navLinks"
             onClick={() => setOpen((o) => !o)}

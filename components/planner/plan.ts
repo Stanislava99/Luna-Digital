@@ -64,34 +64,38 @@ export function savePlan(plan: Plan) {
 export const hasSection = (plan: Plan, id: FeatureId | "amenities" | "map") =>
   id === "amenities" || id === "map" || plan.features.includes(id);
 
-export const placeName = (p: Plan) => p.name.trim() || TYPES[p.type].name;
-export const placeLoc = (p: Plan) => p.location.trim() || "City centre";
+/* The planner passes its translate function; our own email uses the English names. */
+type Tr = (s: string) => string;
+const same: Tr = (s) => s;
+export const placeName = (p: Plan, t = same) => p.name.trim() || t(TYPES[p.type].name);
+export const placeLoc = (p: Plan, t = same) => p.location.trim() || t("City centre");
 export const slug = (p: Plan) =>
   placeName(p).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "").slice(0, 24) || "yourplace";
 
-/** How long the build takes. Prices live on the server only (lib/planPrices.ts). */
-export function buildTime(plan: Plan): string {
+/** How long the build takes, in weeks ("2–3"). Prices live on the server only (lib/planPrices.ts). */
+export function buildWeeks(plan: Plan): string {
   let w = 1;
   if (plan.style === "custom") w += 0.5;
   FEATURES.forEach((f) => { if (plan.features.includes(f.id)) w += f.w; });
   EXTRAS.forEach((x) => { if (plan.extras.includes(x.id)) w += x.w; });
   const weeks = Math.max(1, Math.round(w * PACE[plan.pace].wmult));
-  return `${weeks}–${weeks + 1} weeks`;
+  return `${weeks}–${weeks + 1}`;
 }
+export const buildTime = (plan: Plan) => `${buildWeeks(plan)} weeks`;
 
 /** Turns features on/off, keeping dependencies (booking & sync need the calendar) consistent. */
-export function toggleFeature(features: FeatureId[], id: FeatureId, on: boolean): { features: FeatureId[]; note?: string } {
+export function toggleFeature(features: FeatureId[], id: FeatureId, on: boolean): { features: FeatureId[]; note?: { text: string; name: string } } {
   const f = FEATURES.find((x) => x.id === id)!;
   let next = new Set(features);
-  let note: string | undefined;
+  let note: { text: string; name: string } | undefined;
   if (on) {
     next.add(id);
-    if (f.needs && !next.has(f.needs)) { next.add(f.needs); note = `Added the calendar too: ${f.name.toLowerCase()} needs it`; }
+    if (f.needs && !next.has(f.needs)) { next.add(f.needs); note = { text: "Added the calendar too. It's needed for: {name}", name: f.name }; }
   } else {
     next.delete(id);
     FEATURES.filter((x) => x.needs === id && next.has(x.id)).forEach((dep) => {
       next.delete(dep.id);
-      note = `Removed ${dep.name.toLowerCase()}: it needs the calendar`;
+      note = { text: "Removed, because it needs the calendar: {name}", name: dep.name };
     });
   }
   next = new Set(FEATURES.map((x) => x.id).filter((x) => next.has(x)));

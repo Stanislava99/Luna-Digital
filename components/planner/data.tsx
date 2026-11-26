@@ -7,7 +7,7 @@ export type PlaceType = "apartment" | "villa" | "rooms" | "cabin";
 export type Lang = "en" | "de" | "it";
 export type StyleId = "luna" | "custom";
 export type ThemeId = "coastal" | "lodge" | "midnight";
-export type FontId = "classic" | "elegant" | "modern" | "clean" | "friendly";
+export type FontId = "classic" | "elegant" | "clean";
 export type PaceId = "standard" | "rush";
 export type FeatureId = "gallery" | "calendar" | "booking" | "sync" | "reviews" | "guide" | "languages" | "chat";
 export type ExtraId = "domain" | "copy" | "logo" | "care";
@@ -55,11 +55,9 @@ export const STYLES: Record<StyleId, { label: string; desc: string; theme: Theme
 };
 
 export const FONTS: Record<FontId, { head: string; body: string; hw: number }> = {
-  classic: { head: '"DM Serif Display", serif', body: '"Inter", sans-serif', hw: 400 },
-  elegant: { head: '"Instrument Serif", serif', body: '"Inter", sans-serif', hw: 400 },
-  modern: { head: '"Space Grotesk", sans-serif', body: '"Inter", sans-serif', hw: 700 },
-  clean: { head: '"Inter Tight", sans-serif', body: '"Inter", sans-serif', hw: 700 },
-  friendly: { head: '"Nunito", sans-serif', body: '"Nunito", sans-serif', hw: 800 },
+  classic: { head: 'var(--f-dm-serif), serif', body: 'var(--f-inter), sans-serif', hw: 400 },
+  elegant: { head: 'var(--f-instrument), serif', body: 'var(--f-inter), sans-serif', hw: 400 },
+  clean: { head: 'var(--f-inter-tight), sans-serif', body: 'var(--f-inter), sans-serif', hw: 700 },
 };
 
 export const THEMES: Record<ThemeId, { vars: Record<"bg" | "surface" | "text" | "muted" | "primary" | "accent" | "radius", string>; tiles: string[] }> = {

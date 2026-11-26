@@ -12,6 +12,7 @@
  * to opening the visitor's own email app, so no message is lost.
  */
 import { NextResponse } from "next/server";
+import { isLocale, LOCALES } from "@/lib/i18n";
 import { estimateText, parseChoices } from "@/lib/planPrices";
 import { EMAIL_RE } from "@/lib/site";
 
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
   const email = oneLine(body.email, 150);
   const company = oneLine(body.company, 150);
   const budget = oneLine(body.budget, 50);
+  const locale = oneLine(body.locale, 5);
   const founding = Boolean(body.founding);
   const choices = parseChoices(body.plan); // only sent by the planner
   const message = String(body.message ?? "").trim().slice(0, 5000);
@@ -54,6 +56,7 @@ export async function POST(req: Request) {
     `Name:    ${name}`,
     `Email:   ${email}`,
     company ? `Company: ${company}` : null,
+    isLocale(locale) ? `Language: ${LOCALES[locale].name}` : null,
     budget ? `Budget:  ${budget}` : null,
     founding ? "Founding client spot: Yes (20% off)" : null,
     "",
